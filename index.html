@@ -170,6 +170,28 @@
   .spot__map:hover{color:var(--lagoon-deep);gap:8px}
   .empty{color:var(--muted);font-size:15px;padding:30px 0}
 
+  /* ---------- TRANSFERTS ---------- */
+  .trf{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+  .trf__card{background:var(--shell);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;display:flex;flex-direction:column;gap:11px;border-top:3px solid var(--tc,var(--lagoon));
+    transition:.25s var(--ease)}
+  .trf__card:hover{transform:translateY(-3px);box-shadow:0 16px 36px -22px rgba(10,42,48,.5);border-color:#D8CDBA}
+  .trf__top{display:flex;align-items:center;gap:9px}
+  .trf__icon{font-size:20px;line-height:1}
+  .trf__route{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px;
+    letter-spacing:-.01em;line-height:1.15}
+  .trf__status{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:99px;font-weight:700;
+    color:#fff;background:var(--sc,var(--coral));white-space:nowrap}
+  .trf__meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;color:var(--muted)}
+  .trf__meta b{color:var(--ink);font-weight:700}
+  .trf__note{font-size:13.5px;color:#41545A}
+  .trf__book{align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--lagoon);padding-bottom:1px;
+    transition:.2s var(--ease)}
+  .trf__book:hover{color:var(--lagoon-deep)}
+
   /* ---------- CHECKLISTS ---------- */
   .ck-overall{display:flex;align-items:center;gap:16px;background:var(--shell);
     border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-bottom:26px;
@@ -266,6 +288,7 @@
     <div class="nav__brand">🌴 <span>Thaïlande · Le plan</span></div>
     <div class="nav__links">
       <a href="#agenda">Agenda</a>
+      <a href="#transferts">Transferts</a>
       <a href="#spots">Spots</a>
       <a href="#checklists">Checklists</a>
     </div>
@@ -289,12 +312,28 @@
 
   <div class="divider"></div>
 
+  <!-- ===== TRANSFERTS ===== -->
+  <section class="section" id="transferts">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-head__l">
+          <div class="sec-num">02 — La logistique</div>
+          <h2>Transferts à réserver</h2>
+          <p>Les vols et ferries clés du voyage, avec horaires, prix indicatifs et où réserver. Les ferries inter-îles (Samui → Phangan, Phangan → Tao) se prennent sur place ou sur 12Go.</p>
+        </div>
+      </div>
+      <div class="trf" id="trfList"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- ===== SPOTS ===== -->
   <section class="section" id="spots">
     <div class="wrap">
       <div class="sec-head reveal">
         <div class="sec-head__l">
-          <div class="sec-num">02 — Le terrain</div>
+          <div class="sec-num">03 — Le terrain</div>
           <h2>Spots &amp; activités</h2>
           <p>Tout ce qu'il y a à faire, rangé par île. Chaque carte ouvre le lieu dans Google Maps. Filtre par escale ci-dessous.</p>
         </div>
@@ -312,7 +351,7 @@
     <div class="wrap">
       <div class="sec-head reveal">
         <div class="sec-head__l">
-          <div class="sec-num">03 — Les préparatifs</div>
+          <div class="sec-num">04 — Les préparatifs</div>
           <h2>Checklists</h2>
           <p>Avant le départ, l'admin, les bagages, et sur place. Coche au fur et à mesure — ça reste enregistré sur ton appareil.</p>
         </div>
@@ -353,82 +392,88 @@ const CAT_EMOJI = {
 const ROUTE = ["Bangkok","Koh Samui","Koh Phangan","Koh Tao","Bangkok"];
 
 const AGENDA = [
-  {d:"04",dow:"Mar",e:"Bangkok",t:"Arrivée à Bangkok",p:"Atterrissage 12h35 à Suvarnabhumi. On récupère du vol long-courrier, on pose les sacs. Si on tient debout : street food à Chinatown le soir.",s:"Bangkok · Sukhumvit"},
-  {d:"05",dow:"Mer",e:"Transfert",t:"Cap au sud → Koh Samui",p:"Vol du matin vers Koh Samui (ou Surat Thani + ferry). Installation à Bophut, première baignade, repérage du coin.",s:"Koh Samui · Bophut"},
-  {d:"06",dow:"Jeu",e:"Koh Samui",t:"Ang Thong (si beau temps)",p:"Excursion au parc marin d'Ang Thong : lagon émeraude, kayak, viewpoint. À caler sur un jour de ciel dégagé — météo moyenne ? On inverse avec un autre jour Samui.",s:"Koh Samui · Bophut"},
-  {d:"07",dow:"Ven",e:"Koh Samui",t:"Tour de l'île & viewpoints",p:"Big Buddha & Wat Plai Laem, cascades de Na Muang, tour tranquille. Coucher de soleil et cocktails à 4 Spices ou The Cocoon.",s:"Koh Samui · Bophut"},
-  {d:"08",dow:"Sam",e:"Koh Samui",t:"Plage & dernier soir",p:"Journée plage ou beach club, massage. Dernier soir : Chaweng si on veut sortir.",s:"Koh Samui · Bophut"},
-  {d:"09",dow:"Dim",e:"Transfert",t:"Ferry → Koh Phangan",p:"Ferry rapide (30-45 min). Installation côté ouest, à Sri Thanu. Apéro au coucher du soleil.",s:"Koh Phangan · Sri Thanu"},
-  {d:"10",dow:"Lun",e:"Koh Phangan",t:"Nord & snorkeling",p:"Mae Haad + le banc de sable de Koh Ma — le meilleur snorkel de l'île, coraux dès la plage. Vérifier les marées.",s:"Koh Phangan · Sri Thanu"},
-  {d:"11",dow:"Mar",e:"Koh Phangan",t:"Côte ouest & couchers de soleil",p:"Secret Beach, Haad Yao, Haad Son. Les plus beaux couchers de soleil de l'île, beach bars les pieds dans le sable.",s:"Koh Phangan · Sri Thanu"},
-  {d:"12",dow:"Mer",e:"Koh Phangan",t:"Est bohème + Black Moon",p:"Haad Yuan en taxi-boat (surtout pas en scooter, piste cassée). Soir : Black Moon Party (~12-13 août) — psytrance dans une clairière de jungle, vibe underground.",s:"Koh Phangan · Sri Thanu"},
-  {d:"13",dow:"Jeu",e:"Koh Phangan",t:"Jungle & cascades",p:"Cascade Phaeng + Domsila viewpoint, journée nature au cœur de l'île.",s:"Koh Phangan · Sri Thanu"},
-  {d:"14",dow:"Ven",e:"Koh Phangan",t:"Bottle Beach + soirée",p:"Journée à Bottle Beach (accès bateau, sublime). Soir : Guy's Bar à Haad Yuan — fête de falaise jungle, tous les vendredis. (Half Moon le 5 & 21, Full Moon le 28 : hors fenêtre.)",s:"Koh Phangan · Sri Thanu"},
-  {d:"15",dow:"Sam",e:"Transfert",t:"Ferry → Koh Tao",p:"Ferry vers Koh Tao (1h-1h30). Installation à Sairee. Passer réserver l'Open Water ou les fun dives.",s:"Koh Tao · Sairee"},
-  {d:"16",dow:"Dim",e:"Koh Tao",t:"Plongée / snorkel — jour 1",p:"Début de l'Open Water (si certif) ou première sortie / snorkel. Sairee le soir, fire shows.",s:"Koh Tao · Sairee"},
-  {d:"17",dow:"Lun",e:"Koh Tao",t:"Koh Nang Yuan",p:"Les 3 îlots reliés par un banc de sable + le viewpoint. Snorkel carte postale, la photo iconique de Koh Tao.",s:"Koh Tao · Sairee"},
-  {d:"18",dow:"Mar",e:"Koh Tao",t:"Plongée & baies",p:"Sortie sur les bons spots (Sail Rock, Chumphon Pinnacle) ou snorkel à Tanote Bay et Shark Bay.",s:"Koh Tao · Sairee"},
-  {d:"19",dow:"Mer",e:"Koh Tao",t:"Dernière plongée & chill",p:"Dernière plongée le matin (pas d'avion dans les 18-24h après — large ici). Après-midi détente, derniers achats.",s:"Koh Tao · Sairee"},
-  {d:"20",dow:"Jeu",e:"Transfert",t:"Retour → Bangkok",p:"Ferry Koh Tao → Samui puis vol vers Bangkok. Installation, soir tranquille, repérage du quartier.",s:"Bangkok · Sukhumvit"},
-  {d:"21",dow:"Ven",e:"Bangkok",t:"Temples & fleuve",p:"Le matin : Grand Palais + Wat Pho + Wat Arun (tenue couvrante). Rooftop le soir (Lebua / Vertigo).",s:"Bangkok · Sukhumvit"},
-  {d:"22",dow:"Sam",e:"Bangkok",t:"Marchés & vie nocturne",p:"Chatuchak le matin (week-end), Jim Thompson House pour souffler. Soir : marché de nuit Jodd Fairs puis sortie.",s:"Bangkok · Sukhumvit"},
-  {d:"23",dow:"Dim",e:"Bangkok",t:"Muay Thai & massage",p:"Massage thaï, ICONSIAM ou Golden Mount. Soir : combats de Muay Thai au stade Rajadamnern. Dernier festin street food.",s:"Bangkok · Sukhumvit"},
+  {d:"04",dow:"Mar",e:"Transfert",t:"Arrivée + vol du soir → Koh Samui",p:"Atterrissage 12h35 à Suvarnabhumi. Immigration, TDAC, récupération des bagages — puis vol Bangkok Airways du soir (~17h20-18h20, même aéroport, zéro transfert) vers Koh Samui. On dort sur l'île dès ce soir. ✈️→🏝️ (Dernier vol filet de sécurité : ~19h45 si le Condor a du retard.)",s:"Koh Samui · Bophut"},
+  {d:"05",dow:"Mer",e:"Koh Samui",t:"Réveil sur l'île",p:"Premier vrai réveil sur Samui — journée gagnée grâce au vol de la veille. On prend nos marques : plage, Bophut & Fisherman's Village, baignade tranquille. Pas de course, on est là pour profiter.",s:"Koh Samui · Bophut"},
+  {d:"06",dow:"Jeu",e:"Koh Samui",t:"Ang Thong (si beau)",p:"Excursion journée Ang Thong Marine Park (lagon émeraude, kayak, viewpoint) — à caler sur un jour de ciel dégagé, vérifier la veille. Si météo moyenne : on inverse avec un autre jour Samui.",s:"Koh Samui · Bophut"},
+  {d:"07",dow:"Ven",e:"Koh Samui",t:"Samui tour & viewpoints",p:"Big Buddha, cascades Na Muang (belles en saison verte), tour de l'île tranquille. Coucher de soleil + cocktails à 4 Spices ou The Cocoon. Dîner Fisherman's Village.",s:"Koh Samui · Bophut"},
+  {d:"08",dow:"Sam",e:"Koh Samui",t:"Plage & dernier soir Samui",p:"Journée plage / beach club (The Deck), massage. Soir : Chaweng pour l'ambiance si envie de sortir.",s:"Koh Samui · Bophut"},
+  {d:"09",dow:"Dim",e:"Transfert",t:"Ferry → Koh Phangan",p:"Ferry Lomprayah/Seatran (30-45 min). Installation, repérage Thong Sala / côte ouest. Apéro coucher de soleil.",s:"Koh Phangan · Sri Thanu (ouest) ou Thong Sala"},
+  {d:"10",dow:"Lun",e:"Koh Phangan",t:"Nord & snorkeling",p:"Mae Haad + banc de sable vers Koh Ma (coraux dès la plage, le meilleur snorkel de l'île). Vérifier les marées pour le banc de sable.",s:"Koh Phangan · Sri Thanu"},
+  {d:"11",dow:"Mar",e:"Koh Phangan",t:"Côte ouest & couchers de soleil",p:"Secret Beach + beach bar Lost 'N Found (cash only, fermé mercredi), Haad Yao, Haad Son. Les plus beaux couchers de soleil de l'île.",s:"Koh Phangan · Sri Thanu"},
+  {d:"12",dow:"Mer",e:"Koh Phangan",t:"Est bohème (Haad Yuan)",p:"Taxi-boat depuis Haad Rin vers Haad Yuan / Haad Tien (vibe alternative, plage isolée). NE PAS y aller en scooter (piste cassée, dangereuse). Soir : Black Moon Party (nouvelle lune, ~12-13 août) — psytrance/techno dans une clairière jungle, vibe underground. Reconfirmer la date exacte.",s:"Koh Phangan · Sri Thanu"},
+  {d:"13",dow:"Jeu",e:"Koh Phangan",t:"Jungle & cascades",p:"Cascade Phaeng + Domsila viewpoint, cascades Than Sadet. Journée nature dans l'intérieur de l'île.",s:"Koh Phangan · Sri Thanu"},
+  {d:"14",dow:"Ven",e:"Koh Phangan",t:"Soirée + Bottle Beach",p:"Journée Bottle Beach (Haad Khuat, accès bateau, une des plus belles plages). Soir : Guy's Bar à Haad Yuan (fête de falaise jungle, accès bateau, tous les vendredis) — la meilleure soirée nommée de ta fenêtre. ⚠️ Half Moon HORS fenêtre (5 & 21 août). Black Moon ~12-13 → voir mer 12.",s:"Koh Phangan · Sri Thanu"},
+  {d:"15",dow:"Sam",e:"Transfert",t:"Ferry → Koh Tao",p:"Ferry vers Koh Tao (1h-1h30). Installation à Sairee. Si plongée prévue : passer dans un centre réserver l'Open Water / les fun dives.",s:"Koh Tao · Sairee Beach"},
+  {d:"16",dow:"Dim",e:"Koh Tao",t:"Plongée / snorkel J1",p:"Début Open Water (si certif) ou première sortie fun dive / snorkel. Sairee le soir, fire shows.",s:"Koh Tao · Sairee"},
+  {d:"17",dow:"Lun",e:"Koh Tao",t:"Koh Nang Yuan",p:"Plongée + Koh Nang Yuan (les 3 îlots reliés par un banc de sable, viewpoint, snorkel carte postale).",s:"Koh Tao · Sairee"},
+  {d:"18",dow:"Mar",e:"Koh Tao",t:"Plongée / viewpoints",p:"Sortie sur les bons spots (Sail Rock, Chumphon Pinnacle) ou viewpoint John-Suwan, kayak Mango Bay.",s:"Koh Tao · Sairee"},
+  {d:"19",dow:"Mer",e:"Koh Tao",t:"Dernière plongée & chill",p:"Dernière plongée le matin (⚠️ pas d'avion dans les 18-24h après une plongée — large vu le vol du 24, mais on garde la règle en tête). Aprèm chill, derniers achats.",s:"Koh Tao · Sairee"},
+  {d:"20",dow:"Jeu",e:"Transfert",t:"Retour → Bangkok",p:"Ferry Koh Tao → Koh Samui (~09h30→11h30) puis vol Bangkok Airways Samui → Bangkok (~15h→16h15). Installation à Sukhumvit, soir tranquille, repérage du quartier.",s:"Bangkok · Sukhumvit"},
+  {d:"21",dow:"Ven",e:"Bangkok",t:"Temples & fleuve",p:"Le matin : Grand Palais + Wat Pho + Wat Arun (tenue couvrante stricte). L'après-midi : Jim Thompson House ou Wat Saket (Golden Mount). Rooftop le soir (Lebua / Vertigo).",s:"Bangkok · Sukhumvit"},
+  {d:"22",dow:"Sam",e:"Bangkok",t:"Marchés & vie nocturne",p:"Chatuchak (marché géant, le week-end) le matin. Soir : marché de nuit Jodd Fairs, puis sortie (Thonglor / RCA).",s:"Bangkok · Sukhumvit"},
+  {d:"23",dow:"Dim",e:"Bangkok",t:"Muay Thai & massage",p:"Massage thaï, derniers achats. Soir : combats de Muay Thai au stade Rajadamnern (vrai spectacle). Dernier festin street food.",s:"Bangkok · Sukhumvit"},
   {d:"24",dow:"Lun",e:"Bangkok",t:"Départ",p:"Journée libre / récup. Être à Suvarnabhumi vers 19h30 (comptoirs Condor N5-N9). Vol 22h35. ✈️",s:"—"}
+];
+
+const TRANSFERTS = [
+  {trajet:"Bangkok → Koh Samui",j:"04 août",type:"Vol",op:"Bangkok Airways",h:"~17h20-18h20 (dernier ~19h45)",prix:"~90-145 €/pers",statut:"À réserver",book:"https://www.bangkokair.com",note:"Même aéroport (Suvarnabhumi) que l'arrivée → zéro transfert. 20 kg + lounge inclus. Garder ~5h de marge après l'atterrissage."},
+  {trajet:"Koh Tao → Koh Samui",j:"20 août",type:"Ferry",op:"Lomprayah",h:"~09h30 → ~11h30",prix:"~18 € (700 THB)",statut:"À réserver",book:"https://12go.asia",note:"Catamaran Mae Haad → Maenam. À enchaîner avec le vol de l'après-midi."},
+  {trajet:"Koh Samui → Bangkok",j:"20 août",type:"Vol",op:"Bangkok Airways",h:"~15h → ~16h15",prix:"~90-145 €/pers",statut:"À réserver",book:"https://www.bangkokair.com",note:"Caler après le ferry (marge ~3h). Arrivée BKK large avant le vol retour du 24."}
 ];
 
 const SPOTS = [
   // Koh Samui
-  {n:"Ang Thong Marine Park",i:"Ang Thong",c:"Excursion",note:"42 îles karstiques, le lagon émeraude qui a inspiré « The Beach », kayak, viewpoint. Excursion journée depuis Samui, un jour de beau temps.",m:"https://maps.google.com/?cid=1774798721901172880"},
-  {n:"Fisherman's Village (Bophut)",i:"Koh Samui",c:"Bar & resto",note:"Ruelle bord de mer pleine de restos et bars. Marché le vendredi soir. Bar Garnish (cocktails créatifs) à l'étage.",m:"https://www.google.com/maps/search/?api=1&query=Fisherman+Village+Bophut+Koh+Samui"},
-  {n:"The Cocoon Viewpoint",i:"Koh Samui",c:"Viewpoint",note:"Resto avec vue panoramique sur l'île et la mer. Parfait au coucher de soleil.",m:"https://maps.google.com/?cid=900251576794148564"},
-  {n:"4 Spices",i:"Koh Samui",c:"Bar & resto",note:"Fusion + cocktails, vue sur Bangrak Bay. Très bien noté, top pour un premier ou dernier soir.",m:"https://maps.google.com/?cid=10937680934952464171"},
+  {n:"Ang Thong Marine Park",i:"Ang Thong",c:"Excursion",note:"42 îles karstiques, lagon émeraude (Talay Nai) qui a inspiré « The Beach », kayak, viewpoint à grimper. Excursion journée depuis Samui (~1500-2000 THB). À caler un jour de beau temps — le parc peut fermer si mer agitée.",m:"https://maps.google.com/?cid=1774798721901172880"},
+  {n:"Fisherman's Village (Bophut)",i:"Koh Samui",c:"Bar & resto",note:"Ruelle bord de mer pleine de restos et bars à cocktails. Marché de rue le vendredi soir. Bar « Garnish » (cocktails créatifs) au 1er étage. Bon QG pour les soirées Samui.",m:"https://www.google.com/maps/search/?api=1&query=Fisherman+Village+Bophut+Koh+Samui"},
+  {n:"The Cocoon Viewpoint",i:"Koh Samui",c:"Viewpoint",note:"Resto avec vue panoramique sur l'île et la mer. Parfait au coucher de soleil. Cuisine correcte, on y vient surtout pour la vue.",m:"https://maps.google.com/?cid=900251576794148564"},
+  {n:"4 Spices",i:"Koh Samui",c:"Bar & resto",note:"Resto fusion + cocktails avec vue sur Bangrak Bay. Très bien noté, ambiance détendue, bon pour un premier ou dernier soir.",m:"https://maps.google.com/?cid=10937680934952464171"},
   {n:"Big Buddha (Wat Phra Yai)",i:"Koh Samui",c:"Temple",note:"Le grand Bouddha doré, emblème du nord de l'île. Rapide à voir, joli au coucher de soleil. Tenue couvrante.",m:"https://www.google.com/maps/search/?api=1&query=Big+Buddha+Koh+Samui"},
-  {n:"Wat Plai Laem",i:"Koh Samui",c:"Temple",note:"Temple coloré au bord de l'eau, immense statue de Guanyin à 18 bras. Gratuit, ~1h, à coupler avec le Big Buddha juste à côté.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Plai+Laem&query_place_id=ChIJQc1OzAjwVDARv0towXonUM8"},
-  {n:"Cascades de Na Muang",i:"Koh Samui",c:"Cascade",note:"Deux cascades dans la jungle, bien remplies en saison verte. Baignade possible.",m:"https://www.google.com/maps/search/?api=1&query=Na+Muang+Waterfall+Koh+Samui"},
-  {n:"Hin Ta Hin Yai",i:"Koh Samui",c:"Viewpoint",note:"Les rochers « Grand-père / Grand-mère » (assez suggestifs) au bord de la mer. Arrêt photo rapide et gratuit, glace coco.",m:"https://www.google.com/maps/search/?api=1&query=Hin+Ta+Hin+Yai&query_place_id=ChIJi_MqvFPyVDARyZQrKj0jYtw"},
-  {n:"Lamai Beach",i:"Koh Samui",c:"Plage",note:"La 2e grande plage de Samui, plus chill que Chaweng, superbe lumière au sud. Vagues parfois fortes.",m:"https://www.google.com/maps/search/?api=1&query=Lamai+Beach&query_place_id=ChIJRaxlSU_yVDARaN2w-bDYhfk"},
-  {n:"Chaweng Beach",i:"Koh Samui",c:"Sortie",note:"La plage la plus animée + le cœur de la vie nocturne de Samui. Bars, clubs, restos.",m:"https://www.google.com/maps/search/?api=1&query=Chaweng+Beach+Koh+Samui"},
+  {n:"Wat Plai Laem",i:"Koh Samui",c:"Temple",note:"Temple coloré au bord de l'eau, immense statue de Guanyin (déesse à 18 bras). Gratuit, ~1h, à coupler avec le Big Buddha juste à côté. Tenue couvrante.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Plai+Laem&query_place_id=ChIJQc1OzAjwVDARv0towXonUM8"},
+  {n:"Cascades de Na Muang",i:"Koh Samui",c:"Cascade",note:"Deux cascades dans la jungle, bien remplies en saison verte. Baignade possible. Na Muang 2 demande une petite marche.",m:"https://www.google.com/maps/search/?api=1&query=Na+Muang+Waterfall+Koh+Samui"},
+  {n:"Hin Ta Hin Yai (rochers Grand-père/Grand-mère)",i:"Koh Samui",c:"Viewpoint",note:"Formations rocheuses (assez… suggestives) au bord de la mer, arrêt photo rapide et gratuit. Glace coco sur place. Côte sud-est.",m:"https://www.google.com/maps/search/?api=1&query=Hin+Ta+Hin+Yai&query_place_id=ChIJi_MqvFPyVDARyZQrKj0jYtw"},
+  {n:"Lamai Beach",i:"Koh Samui",c:"Plage",note:"La 2e grande plage de Samui, plus chill que Chaweng, superbe lumière au sud. Vagues parfois fortes. Bonne alternative pour une journée plage moins touristique.",m:"https://www.google.com/maps/search/?api=1&query=Lamai+Beach&query_place_id=ChIJRaxlSU_yVDARaN2w-bDYhfk"},
+  {n:"Chaweng Beach",i:"Koh Samui",c:"Sortie",note:"La plage la plus animée + le cœur de la vie nocturne de Samui. Bars, clubs, restos. Pour le soir si on veut sortir.",m:"https://www.google.com/maps/search/?api=1&query=Chaweng+Beach+Koh+Samui"},
   // Koh Phangan
-  {n:"Secret Beach & Lost 'N Found",i:"Koh Phangan",c:"Plage",note:"Côte ouest, un des plus beaux couchers de soleil + beach bar. Cash uniquement, fermé le mercredi. Arriver tôt.",m:"https://maps.google.com/?cid=4587116298742308382"},
-  {n:"Mae Haad & banc de sable Koh Ma",i:"Koh Phangan",c:"Snorkel & plongée",note:"Le meilleur snorkel de l'île : coraux dès la plage, banc de sable vers Koh Ma à marée basse.",m:"https://maps.google.com/?cid=2805075301471588314"},
-  {n:"Haad Yuan",i:"Koh Phangan",c:"Plage",note:"Côte est bohème, plage isolée, taxi-boat depuis Haad Rin (~300 THB). Surtout pas en scooter, la piste est dangereuse.",m:"https://maps.google.com/?cid=953476580253672441"},
-  {n:"Thong Nai Pan (Noi & Yai)",i:"Koh Phangan",c:"Plage",note:"Souvent citée comme LA plus belle plage de Phangan : sable fin, eau claire, côte est calme. Courant parfois fort.",m:"https://www.google.com/maps/search/?api=1&query=Thong+Nai+Pan&query_place_id=ChIJWdrxU-oCVTARRWiblhgBoPs"},
-  {n:"Bottle Beach (Haad Khuat)",i:"Koh Phangan",c:"Plage",note:"Nord reculé, accès en bateau, une des plus belles plages de l'île. Quasi sauvage, journée déconnexion.",m:"https://www.google.com/maps/search/?api=1&query=Bottle+Beach+Koh+Phangan"},
-  {n:"Haad Yao",i:"Koh Phangan",c:"Plage",note:"Ouest, belle plage chill, bars et restos pieds dans le sable, beaux couchers de soleil.",m:"https://www.google.com/maps/search/?api=1&query=Haad+Yao+Koh+Phangan"},
-  {n:"Cascade Phaeng & Domsila Viewpoint",i:"Koh Phangan",c:"Viewpoint",note:"Cœur jungle de l'île. Petite rando jusqu'au viewpoint, vue plongeante. Cascade plus belle après la pluie.",m:"https://www.google.com/maps/search/?api=1&query=Phaeng+Waterfall+Domsila+Viewpoint+Koh+Phangan"},
-  {n:"Amsterdam Bar (sunset)",i:"Koh Phangan",c:"Bar & resto",note:"Bar perché, le spot coucher de soleil de l'île, piscine + vue. Entrée payante (~300-400 THB) et boissons chères, mais ça vaut le coup une fois.",m:"https://www.google.com/maps/search/?api=1&query=Amsterdam+Bar+Koh+Phangan&query_place_id=ChIJJ2p6NW7-VDARn6PGkxu21UE"},
-  {n:"Haad Rin",i:"Koh Phangan",c:"Sortie",note:"La plage des fêtes (Full / Half Moon). Animée tous les soirs. Chaussures fermées si soirée (verre cassé sur le sable).",m:"https://www.google.com/maps/search/?api=1&query=Haad+Rin+Koh+Phangan"},
+  {n:"Secret Beach & Lost 'N Found",i:"Koh Phangan",c:"Plage",note:"Côte ouest, un des plus beaux couchers de soleil + beach bar sympa. ⚠️ Cash uniquement, fermé le mercredi. Arriver tôt pour les transats.",m:"https://maps.google.com/?cid=4587116298742308382"},
+  {n:"Mae Haad & banc de sable Koh Ma",i:"Koh Phangan",c:"Snorkel & plongée",note:"Le meilleur snorkeling de l'île : coraux dès la plage, banc de sable qui rejoint Koh Ma à marée basse. Vérifier les horaires de marée.",m:"https://maps.google.com/?cid=2805075301471588314"},
+  {n:"Haad Yuan",i:"Koh Phangan",c:"Plage",note:"Côte est bohème, plage isolée, vibe alternative. Accès en taxi-boat depuis Haad Rin (~300 THB). ⚠️ Ne pas y aller en scooter, la piste est cassée et dangereuse.",m:"https://maps.google.com/?cid=953476580253672441"},
+  {n:"Thong Nai Pan (Noi & Yai)",i:"Koh Phangan",c:"Plage",note:"Souvent citée comme LA plus belle plage de Phangan : sable fin, eau claire, côte est plus calme. Courant parfois fort, plage en partie accaparée par les resorts. Vaut le détour.",m:"https://www.google.com/maps/search/?api=1&query=Thong+Nai+Pan&query_place_id=ChIJWdrxU-oCVTARRWiblhgBoPs"},
+  {n:"Bottle Beach (Haad Khuat)",i:"Koh Phangan",c:"Plage",note:"Nord reculé, accès en bateau, une des plus belles plages de l'île. Quasi sauvage, parfait pour une journée déconnexion.",m:"https://www.google.com/maps/search/?api=1&query=Bottle+Beach+Koh+Phangan"},
+  {n:"Haad Yao",i:"Koh Phangan",c:"Plage",note:"Ouest, belle plage chill, sable agréable, bars et restos pieds dans le sable. Beaux couchers de soleil.",m:"https://www.google.com/maps/search/?api=1&query=Haad+Yao+Koh+Phangan"},
+  {n:"Cascade Phaeng & Domsila Viewpoint",i:"Koh Phangan",c:"Viewpoint",note:"Cœur jungle de l'île. Petite rando jusqu'au Domsila viewpoint, vue plongeante. Cascade plus belle après la pluie (donc top en août).",m:"https://www.google.com/maps/search/?api=1&query=Phaeng+Waterfall+Domsila+Viewpoint+Koh+Phangan"},
+  {n:"Amsterdam Bar (sunset)",i:"Koh Phangan",c:"Bar & resto",note:"Bar perché, le spot coucher de soleil de l'île, piscine + vue panoramique. ⚠️ Entrée payante (~300-400 THB) juste pour la vue, boissons chères. Vaut le coup une fois pour le sunset.",m:"https://www.google.com/maps/search/?api=1&query=Amsterdam+Bar+Koh+Phangan&query_place_id=ChIJJ2p6NW7-VDARn6PGkxu21UE"},
+  {n:"Haad Rin",i:"Koh Phangan",c:"Sortie",note:"La plage des fêtes (Full/Half Moon). Animée tous les soirs, bars en enfilade. Chaussures fermées si soirée (verre cassé sur le sable).",m:"https://www.google.com/maps/search/?api=1&query=Haad+Rin+Koh+Phangan"},
   // Koh Tao
-  {n:"Sairee Beach",i:"Koh Tao",c:"Sortie",note:"Le cœur de Koh Tao : bars pieds dans le sable, fire shows, restos, écoles de plongée. Ambiance facile le soir.",m:"https://www.google.com/maps/search/?api=1&query=Sairee+Beach+Koh+Tao"},
-  {n:"Koh Nang Yuan",i:"Koh Tao",c:"Snorkel & plongée",note:"3 îlots reliés par un banc de sable + viewpoint. Snorkel sublime. Petit droit d'entrée, pas de plastique.",m:"https://www.google.com/maps/search/?api=1&query=Koh+Nang+Yuan"},
-  {n:"Tanote Bay",i:"Koh Tao",c:"Snorkel & plongée",note:"Une des plus belles baies : snorkel + gros rocher d'où sauter. Entrée dans l'eau rocheuse (chaussures d'eau utiles), route raide.",m:"https://www.google.com/maps/search/?api=1&query=Tanote+Bay&query_place_id=ChIJ-YFPKrGhVTARMXNC_vpGLME"},
-  {n:"Shark Bay (Aow Leuk)",i:"Koh Tao",c:"Snorkel & plongée",note:"Snorkel avec requins de récif (inoffensifs) et tortues, surtout tôt le matin. Entrée partagée avec le John-Suwan viewpoint.",m:"https://www.google.com/maps/search/?api=1&query=Shark+Bay+Koh+Tao&query_place_id=ChIJd-gGE52hVTARaXCHLFy29Lg"},
-  {n:"Sail Rock (plongée)",i:"Koh Tao",c:"Snorkel & plongée",note:"Le meilleur site de plongée du coin, en mer entre Tao et Phangan (cheminée verticale, barracudas). Sortie en bateau.",m:"https://www.google.com/maps/search/?api=1&query=Sail+Rock+dive+site+Koh+Tao"},
-  {n:"Big Blue Diving",i:"Koh Tao",c:"Snorkel & plongée",note:"Énorme école très bien notée (Open Water ~3-4j). Autres centres solides : Roctopus, Koh Tao Divers, Scuba Birds.",m:"https://maps.google.com/?cid=16581665598804254942"},
-  {n:"John-Suwan Viewpoint",i:"Koh Tao",c:"Viewpoint",note:"Vue sur les baies jumelles au sud. Courte montée, top en fin de journée. Petit droit d'accès.",m:"https://www.google.com/maps/search/?api=1&query=John-Suwan+Viewpoint+Koh+Tao"},
+  {n:"Sairee Beach",i:"Koh Tao",c:"Sortie",note:"Le cœur de Koh Tao : bars pieds dans le sable, fire shows, restos, écoles de plongée. Ambiance facile et conviviale le soir.",m:"https://www.google.com/maps/search/?api=1&query=Sairee+Beach+Koh+Tao"},
+  {n:"Koh Nang Yuan",i:"Koh Tao",c:"Snorkel & plongée",note:"Trois îlots reliés par un banc de sable + viewpoint. La photo iconique de Koh Tao. Snorkel superbe. Petit droit d'entrée, pas de plastique autorisé.",m:"https://www.google.com/maps/search/?api=1&query=Koh+Nang+Yuan"},
+  {n:"Tanote Bay",i:"Koh Tao",c:"Snorkel & plongée",note:"Une des plus belles baies de Koh Tao : snorkel + gros rocher d'où sauter dans l'eau. ⚠️ Entrée dans l'eau rocheuse (chaussures d'eau utiles), route d'accès raide, propreté variable selon les jours.",m:"https://www.google.com/maps/search/?api=1&query=Tanote+Bay&query_place_id=ChIJ-YFPKrGhVTARMXNC_vpGLME"},
+  {n:"Shark Bay (Aow Leuk)",i:"Koh Tao",c:"Snorkel & plongée",note:"Snorkel avec requins de récif (inoffensifs) et tortues, surtout tôt le matin. Eau claire. Entrée partagée avec le John-Suwan viewpoint. Entrée dans l'eau peu profonde et rocheuse, nage prudemment.",m:"https://www.google.com/maps/search/?api=1&query=Shark+Bay+Koh+Tao&query_place_id=ChIJd-gGE52hVTARaXCHLFy29Lg"},
+  {n:"Sail Rock (spot de plongée)",i:"Koh Tao",c:"Snorkel & plongée",note:"Le meilleur site de plongée du coin, entre Tao et Phangan (cheminée verticale, bancs de barracudas). Sorties depuis Tao ou Phangan.",m:"https://www.google.com/maps/search/?api=1&query=Sail+Rock+dive+site+Koh+Tao"},
+  {n:"Big Blue Diving",i:"Koh Tao",c:"Snorkel & plongée",note:"Énorme école très bien notée (Open Water 3-4j ~9000-11000 THB). Autres centres solides : Roctopus, Koh Tao Divers, Scuba Birds. Réserver sur place à l'arrivée.",m:"https://maps.google.com/?cid=16581665598804254942"},
+  {n:"John-Suwan Viewpoint",i:"Koh Tao",c:"Viewpoint",note:"Vue sur les baies jumelles au sud de l'île. Courte montée, top au lever ou en fin de journée. Petit droit d'accès.",m:"https://www.google.com/maps/search/?api=1&query=John-Suwan+Viewpoint+Koh+Tao"},
   // Bangkok
-  {n:"Grand Palais & Wat Phra Kaew",i:"Bangkok",c:"Temple",note:"L'incontournable n°1. Le matin avant la chaleur et la foule. Tenue couvrante stricte (épaules + genoux).",m:"https://www.google.com/maps/search/?api=1&query=Grand+Palace+Bangkok"},
-  {n:"Wat Pho",i:"Bangkok",c:"Temple",note:"Le Bouddha couché géant + le berceau du massage thaï. Juste à côté du Grand Palais.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Pho+Bangkok"},
-  {n:"Wat Arun",i:"Bangkok",c:"Temple",note:"Le temple de l'aube, de l'autre côté du fleuve (petite traversée en bateau). Magnifique en fin de journée.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Arun+Bangkok"},
-  {n:"Wat Saket (Golden Mount)",i:"Bangkok",c:"Temple",note:"La seule colline de Bangkok : 344 marches jusqu'au stupa doré, le meilleur panorama sur la ville. ~100 THB, peu bondé.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Saket+Golden+Mount&query_place_id=ChIJP-MtN12Z4jARlEBmga-oF4w"},
-  {n:"Jim Thompson House",i:"Bangkok",c:"Sortie",note:"Oasis culturelle : maisons en teck + jardin tropical de l'Américain qui a relancé la soie thaï (disparu en 1967). Visite guidée ~250 THB.",m:"https://www.google.com/maps/search/?api=1&query=Jim+Thompson+House&query_place_id=ChIJWVT7hDKZ4jARGJOhe21RhOk"},
-  {n:"Chinatown (Yaowarat)",i:"Bangkok",c:"Bar & resto",note:"La meilleure street food de la ville, ambiance néons le soir. À faire absolument, le ventre vide.",m:"https://www.google.com/maps/search/?api=1&query=Yaowarat+Chinatown+Bangkok"},
-  {n:"Chatuchak Weekend Market",i:"Bangkok",c:"Marché",note:"Marché géant (15 000 stands), week-end seulement. Le matin pour éviter la fournaise.",m:"https://www.google.com/maps/search/?api=1&query=Chatuchak+Weekend+Market+Bangkok"},
-  {n:"Jodd Fairs",i:"Bangkok",c:"Marché",note:"Le marché de nuit le plus tendance. Street food, bières, ambiance. Parfait pour une soirée décontractée.",m:"https://www.google.com/maps/search/?api=1&query=Jodd+Fairs+Bangkok"},
-  {n:"ICONSIAM",i:"Bangkok",c:"Marché",note:"Méga-centre au bord du fleuve avec un marché flottant couvert (SookSiam), clim bienvenue, et show de fontaines le soir. Accessible via la Gold Line.",m:"https://www.google.com/maps/search/?api=1&query=ICONSIAM&query_place_id=ChIJFRjwgc2Z4jAR9JIadoa9YBY"},
-  {n:"Stade Rajadamnern (Muay Thai)",i:"Bangkok",c:"Sortie",note:"Soirée combats de boxe thaï dans un stade historique. Bien plus marquant que ça en a l'air. Réserver en avance.",m:"https://www.google.com/maps/search/?api=1&query=Rajadamnern+Stadium+Bangkok"},
-  {n:"Khao San Road",i:"Bangkok",c:"Sortie",note:"La rue backpacker mythique : street food, bars, tatouages, chaos festif. À faire une fois pour l'ambiance.",m:"https://www.google.com/maps/search/?api=1&query=Khao+San+Road&query_place_id=ChIJDR23yhKZ4jARdqd5AHsct0A"},
-  {n:"Lebua / Sky Bar",i:"Bangkok",c:"Bar & resto",note:"Le rooftop iconique (Very Bad Trip 2). Cher mais la vue vaut le coup une fois. Dress code smart. Alternatives : Vertigo, Octave.",m:"https://www.google.com/maps/search/?api=1&query=Lebua+Sky+Bar+Bangkok"},
-  {n:"Maeklong + Amphawa (journée)",i:"Bangkok",c:"Excursion",note:"Hors Bangkok (~1h-1h30) : marché Maeklong où le train passe AU MILIEU des étals, puis marché flottant d'Amphawa (lucioles le soir). Amphawa = ven-dim.",m:"https://www.google.com/maps/search/?api=1&query=Maeklong+Railway+Market&query_place_id=ChIJ10pbl47T4jAR7qFFA1HY2Ds"},
+  {n:"Grand Palais & Wat Phra Kaew",i:"Bangkok",c:"Temple",note:"L'incontournable n°1. Le matin avant la chaleur et la foule. ⚠️ Tenue couvrante stricte (épaules + genoux), sinon on te refuse l'entrée.",m:"https://www.google.com/maps/search/?api=1&query=Grand+Palace+Bangkok"},
+  {n:"Wat Pho",i:"Bangkok",c:"Temple",note:"Le Bouddha couché géant + le berceau du massage thaï traditionnel (on peut s'y faire masser). Juste à côté du Grand Palais.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Pho+Bangkok"},
+  {n:"Wat Arun",i:"Bangkok",c:"Temple",note:"Le temple de l'aube, de l'autre côté du fleuve (petite traversée en bateau depuis Wat Pho). Magnifique en fin de journée.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Arun+Bangkok"},
+  {n:"Wat Saket (Golden Mount)",i:"Bangkok",c:"Temple",note:"La seule colline de Bangkok : 344 marches le long de cloches jusqu'au stupa doré, et le meilleur panorama sur la ville. ~100 THB. Bien moins bondé que les grands temples.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Saket+Golden+Mount&query_place_id=ChIJP-MtN12Z4jARlEBmga-oF4w"},
+  {n:"Jim Thompson House (musée)",i:"Bangkok",c:"Sortie",note:"Oasis en pleine ville : maisons en teck + jardin tropical de l'Américain qui a relancé la soie thaï (disparu mystérieusement en 1967). Visite guidée ~250 THB. Parfait pour souffler entre deux temples.",m:"https://www.google.com/maps/search/?api=1&query=Jim+Thompson+House&query_place_id=ChIJWVT7hDKZ4jARGJOhe21RhOk"},
+  {n:"Chinatown (Yaowarat)",i:"Bangkok",c:"Bar & resto",note:"La meilleure street food de la ville, ambiance néons le soir. Le truc à faire absolument. Y aller le soir, le ventre vide.",m:"https://www.google.com/maps/search/?api=1&query=Yaowarat+Chinatown+Bangkok"},
+  {n:"Chatuchak Weekend Market",i:"Bangkok",c:"Marché",note:"Marché géant (15 000 stands), uniquement le week-end. Le matin pour éviter la fournaise. Fringues, déco, bouffe, tout.",m:"https://www.google.com/maps/search/?api=1&query=Chatuchak+Weekend+Market+Bangkok"},
+  {n:"Jodd Fairs",i:"Bangkok",c:"Marché",note:"Le marché de nuit le plus tendance du moment. Street food, bières, ambiance. Parfait pour une soirée décontractée.",m:"https://www.google.com/maps/search/?api=1&query=Jodd+Fairs+Bangkok"},
+  {n:"ICONSIAM",i:"Bangkok",c:"Marché",note:"Méga-centre au bord du fleuve avec un marché flottant couvert (SookSiam) pour la street food, clim bienvenue, et spectacle de fontaines/lumières le soir côté rivière. Gratuit, accessible via la Gold Line.",m:"https://www.google.com/maps/search/?api=1&query=ICONSIAM&query_place_id=ChIJFRjwgc2Z4jAR9JIadoa9YBY"},
+  {n:"Stade Rajadamnern (Muay Thai)",i:"Bangkok",c:"Sortie",note:"Soirée combats de boxe thaï dans un stade historique. Bien plus marquant que ça en a l'air. Réserver les billets en avance.",m:"https://www.google.com/maps/search/?api=1&query=Rajadamnern+Stadium+Bangkok"},
+  {n:"Khao San Road",i:"Bangkok",c:"Sortie",note:"La rue backpacker mythique : street food, bars, tatouages, massages, chaos festif. À faire une fois pour l'ambiance (ou comme point de départ de soirée).",m:"https://www.google.com/maps/search/?api=1&query=Khao+San+Road&query_place_id=ChIJDR23yhKZ4jARdqd5AHsct0A"},
+  {n:"Lebua / Sky Bar",i:"Bangkok",c:"Bar & resto",note:"Le rooftop iconique (celui de Very Bad Trip 2). Un verre cher mais la vue vaut le coup une fois. Dress code smart. Alternatives : Vertigo, Octave.",m:"https://www.google.com/maps/search/?api=1&query=Lebua+Sky+Bar+Bangkok"},
+  {n:"Maeklong + Amphawa (excursion journée)",i:"Bangkok",c:"Excursion",note:"Hors Bangkok (~1h-1h30) : marché Maeklong où le train passe AU MILIEU des étals (les vendeurs replient en 2 sec), puis marché flottant d'Amphawa l'aprèm/soir (bateaux, street food, lucioles). ⚠️ Amphawa = ven-dim seulement (fermé jeu). Souvent fait en tour combiné.",m:"https://www.google.com/maps/search/?api=1&query=Maeklong+Railway+Market&query_place_id=ChIJ10pbl47T4jAR7qFFA1HY2Ds"},
   // Khao Sok
-  {n:"Khao Sok / Lac Cheow Lan",i:"Khao Sok",c:"Excursion",note:"OPTION continent (via Surat Thani) : jungle, falaises karstiques, maisons flottantes sur le lac, kayak, safaris. Sublime en saison verte.",m:"https://maps.google.com/?cid=14978000754350885459"}
+  {n:"Khao Sok / Lac Cheow Lan",i:"Khao Sok",c:"Excursion",note:"OPTION (sur le continent, ~2-3h via Surat Thani) : jungle, falaises karstiques, maisons flottantes sur le lac, kayak, safaris en longtail. Sublime en saison verte. Tour 2j/1n ~2000-4000 THB.",m:"https://maps.google.com/?cid=14978000754350885459"}
 ];
 
 const CHECKLISTS = [
-  {h:"Avant le départ",items:["Vérifier la validité du passeport (6 mois après l'entrée)","Remplir le TDAC sur tdac.immigration.go.th (J-3, sans accents, les 3)","Réserver les vols domestiques (Samui direct ou Surat Thani)","Réserver la 1ère nuit à Bangkok (4 août)","Soirée Phangan : Black Moon (~12-13) + Guy's Bar Haad Yuan (ven 14) — reconfirmer & réserver","Réserver le logement Phangan autour de la date de soirée","Réserver les ferries des dates clés (soirée + jour de retour)","Souscrire une assurance voyage AVEC clause scooter","Obtenir un permis international (si on loue un scooter)","Décider qui passe l'Open Water à Koh Tao","Réserver les billets Muay Thai (Rajadamnern) — optionnel"]},
-  {h:"Argent & admin",items:["Prévenir les banques / Revolut du voyage","Prévoir 2 moyens de paiement (carte + cash de secours)","Commander une eSIM (ou SIM AIS/True à l'aéroport)","Télécharger Maps hors-ligne + 12Go Asia + Grab","Mettre en favori : QR TDAC, billet retour, 1ère résa","Remplir le formulaire API Condor (avant chaque vol)"]},
-  {h:"Bagages",items:["Crème solaire (chère sur place)","Répulsif anti-moustiques (dengue en saison verte)","Trousse pharma (anti-diarrhée, pansements, paracétamol)","Vêtements couvrants pour les temples","Chaussures fermées légères (soirées plage + viewpoints)","Sac sec / pochette étanche (bateaux, snorkel)","Maillot x2, lunettes de soleil, casquette","Adaptateur de prise"]},
-  {h:"Sur place",items:["Activer l'eSIM / acheter la SIM à l'arrivée","Retirer du cash en grosse coupure (frais ATM ~220 THB)","Réserver l'Open Water / fun dives en arrivant à Koh Tao","Réserver l'excursion Ang Thong (un jour de beau temps)","Vérifier les marées avant Mae Haad / Koh Ma","Casque + prudence à chaque scooter, eau en bouteille"]}
+  {h:"Avant le départ",items:["Vérifier validité passeport (6 mois après l'entrée)","Remplir le TDAC sur tdac.immigration.go.th (J-3, sans accents, les 3)","Réserver les vols domestiques (Samui direct ou Surat Thani)","Réserver la 1ère nuit à Bangkok (4 août)","Soirée Phangan = Black Moon (~12-13 août) + Guy's Bar Haad Yuan (ven 14). Half Moon (5 & 21) et Full Moon (28) hors fenêtre. Reconfirmer dates + réserver.","Réserver logement Phangan autour de la date de soirée","Réserver les ferries des dates clés (soirée + jour de retour)","Souscrire une assurance voyage AVEC clause scooter","Obtenir un permis international (si on compte louer un scooter)","Décider qui passe l'Open Water à Koh Tao (timing + budget)","Réserver les billets Muay Thai (Rajadamnern)"]},
+  {h:"Argent & admin",items:["Prévenir les banques / Revolut du voyage","Prévoir 2 moyens de paiement (carte + cash de secours)","Commander une eSIM (ou prévoir SIM AIS/True à l'aéroport)","Télécharger Maps hors-ligne + 12Go Asia + Grab","Mettre en favori : QR TDAC, billet retour, 1ère résa hôtel","Remplir le formulaire API Condor (avant chaque vol)"]},
+  {h:"Bagages",items:["Crème solaire (chère sur place)","Répulsif anti-moustiques (dengue en saison verte)","Trousse pharma (anti-diarrhée, pansements, paracétamol)","Vêtements couvrants pour les temples (épaules/genoux)","Chaussures fermées légères (soirées plage + rando viewpoints)","Sac sec / pochette étanche (bateaux, snorkel)","Maillot x2, lunettes de soleil, casquette","Adaptateur de prise (souvent ok sans, mais au cas où)"]},
+  {h:"Sur place",items:["Activer l'eSIM / acheter la SIM à l'arrivée","Retirer du cash en grosse coupure (frais ATM ~220 THB)","Réserver l'Open Water / fun dives en arrivant à Koh Tao","Réserver l'excursion Ang Thong (un jour de beau temps)","Vérifier les marées avant Mae Haad / Koh Ma (snorkel)","Casque + prudence à chaque scooter, eau en bouteille"]}
 ];
 
 /* ---------------- RENDER ---------------- */
@@ -463,6 +508,33 @@ const $ = s => document.querySelector(s);
         <div class="day__prog">${a.p}</div>
         ${a.s!=="—"?`<div class="day__stay">📍 ${a.s}</div>`:""}
       </div>
+    </div>`;
+  }).join("");
+})();
+
+// transferts
+(()=>{
+  const TYPE_ICON = {"Vol":"✈️","Ferry":"⛴️","Ferry+Bus":"🚌"};
+  const TYPE_COLOR = {"Vol":"var(--bangkok)","Ferry":"var(--tao)","Ferry+Bus":"var(--sun)"};
+  const STATUS_COLOR = {"À réserver":"var(--coral)","Réservé":"var(--sun)","Payé":"var(--palm)"};
+  const host = $("#trfList");
+  host.innerHTML = TRANSFERTS.map(t=>{
+    let host2;
+    try{ host2 = new URL(t.book).hostname.replace(/^www\./,""); }catch(e){ host2 = "réserver"; }
+    return `<div class="trf__card reveal" style="--tc:${TYPE_COLOR[t.type]||'var(--lagoon)'}">
+      <div class="trf__top">
+        <span class="trf__icon">${TYPE_ICON[t.type]||"📍"}</span>
+        <span class="trf__route">${t.trajet}</span>
+        <span class="trf__status" style="--sc:${STATUS_COLOR[t.statut]||'var(--coral)'}">${t.statut}</span>
+      </div>
+      <div class="trf__meta">
+        <span>📅 <b>${t.j}</b></span>
+        <span>🕘 ${t.h}</span>
+        <span>🏷️ ${t.op}</span>
+        <span>💶 ${t.prix}</span>
+      </div>
+      <div class="trf__note">${t.note}</div>
+      <a class="trf__book" href="${t.book}" target="_blank" rel="noopener">Réserver sur ${host2} ↗</a>
     </div>`;
   }).join("");
 })();
