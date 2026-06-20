@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thaïlande · Le plan — Août 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --abyss:#0A2A30; --ink:#0A2A30;
+    --lagoon:#11A79C; --lagoon-deep:#0C7F77;
+    --coral:#FF6F59; --sun:#FFB155;
+    --palm:#2F6B4E;
+    --sand:#F4EEE2; --shell:#FCFAF5; --line:#E5DCCC;
+    --muted:#5E7378;
+    --bangkok:#6C7BD6; --samui:#EE8C35; --phangan:#E0588E;
+    --tao:#11A79C; --angthong:#6FB36A; --khaosok:#2F6B4E; --transfert:#90A1A6;
+    --maxw:1080px;
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink); background:var(--sand);
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  ::selection{background:var(--lagoon);color:#fff}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; min-height:100svh; display:flex; flex-direction:column;
+    justify-content:space-between; padding:38px 0 46px; color:#FCFAF5; overflow:hidden;
+    background:
+      radial-gradient(120% 80% at 50% 118%, rgba(255,177,85,.55) 0%, rgba(255,177,85,0) 55%),
+      linear-gradient(178deg,#062029 0%,#0A2A30 26%,#0C5F63 58%,#D9794F 90%,#FFB87A 100%);
+  }
+  .hero::after{ /* faint horizon stars / sea shimmer */
+    content:""; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background:
+      radial-gradient(1.4px 1.4px at 18% 22%,rgba(255,255,255,.7),transparent),
+      radial-gradient(1.2px 1.2px at 70% 16%,rgba(255,255,255,.55),transparent),
+      radial-gradient(1.3px 1.3px at 42% 30%,rgba(255,255,255,.5),transparent),
+      radial-gradient(1px 1px at 86% 28%,rgba(255,255,255,.5),transparent),
+      radial-gradient(1px 1px at 30% 12%,rgba(255,255,255,.4),transparent);
+  }
+  .hero__top,.hero__main,.hero__route{position:relative;z-index:2}
+  .hero__top{display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:rgba(252,250,245,.82)}
+  .hero__top .moon{display:inline-flex;gap:8px;align-items:center}
+  .hero__main{display:flex;flex-direction:column;gap:18px;margin-top:auto}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--sun)}
+  .hero h1{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:800;
+    font-size:clamp(58px,15vw,150px); line-height:.92; letter-spacing:-.02em;
+    text-wrap:balance;
+  }
+  .hero h1 em{font-style:normal;color:var(--sun)}
+  .hero__sub{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
+    font-size:15px;color:rgba(252,250,245,.9);max-width:640px}
+  .hero__sub b{font-weight:600}
+  .hero__stats{display:flex;gap:26px;flex-wrap:wrap;margin-top:4px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.06em;
+    color:rgba(252,250,245,.78)}
+  .hero__stats span b{color:#fff;font-size:18px;font-weight:700;margin-right:6px}
+
+  /* route / cap de navigation — la signature */
+  .hero__route{margin-top:30px}
+  .route{display:flex;align-items:center;overflow-x:auto;padding-bottom:6px;
+    scrollbar-width:none}
+  .route::-webkit-scrollbar{display:none}
+  .route__node{display:flex;flex-direction:column;align-items:center;gap:9px;flex:0 0 auto;
+    min-width:74px}
+  .route__dot{width:13px;height:13px;border-radius:50%;background:#FCFAF5;
+    box-shadow:0 0 0 4px rgba(252,250,245,.18);position:relative}
+  .route__node:first-child .route__dot,.route__node:last-child .route__dot{
+    background:var(--sun);box-shadow:0 0 0 4px rgba(255,177,85,.25)}
+  .route__name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:rgba(252,250,245,.92);text-align:center;white-space:nowrap}
+  .route__seg{flex:1 1 auto;min-width:26px;height:2px;align-self:flex-start;margin-top:6px;
+    background:repeating-linear-gradient(90deg,rgba(252,250,245,.7) 0 5px,transparent 5px 11px)}
+
+  /* ---------- NAV ---------- */
+  .nav{position:sticky;top:0;z-index:40;background:rgba(244,238,226,.82);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav__in{max-width:var(--maxw);margin:0 auto;padding:13px 24px;display:flex;
+    align-items:center;justify-content:space-between;gap:16px}
+  .nav__brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;
+    letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+  .nav__links{display:flex;gap:6px}
+  .nav__links a{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.05em;
+    text-transform:uppercase;text-decoration:none;color:var(--muted);
+    padding:7px 13px;border-radius:99px;transition:.2s var(--ease)}
+  .nav__links a:hover{color:var(--ink);background:rgba(17,167,156,.1)}
+
+  /* ---------- SECTIONS ---------- */
+  .section{padding:78px 0 14px}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+    margin-bottom:34px;flex-wrap:wrap}
+  .sec-head__l{max-width:620px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;
+    color:var(--lagoon-deep);text-transform:uppercase}
+  .sec-head h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;
+    font-size:clamp(34px,5.5vw,54px);line-height:1;letter-spacing:-.02em;margin:10px 0 12px}
+  .sec-head p{color:var(--muted);font-size:15.5px;max-width:560px}
+  .divider{height:1px;max-width:var(--maxw);margin:64px auto 0;
+    background:repeating-linear-gradient(90deg,var(--line) 0 7px,transparent 7px 15px)}
+
+  /* ---------- AGENDA ---------- */
+  .timeline{position:relative;padding-left:8px}
+  .day{position:relative;display:grid;grid-template-columns:96px 1fr;gap:22px;
+    padding:0 0 26px 0}
+  .day__rail{position:relative;text-align:right;padding-right:24px}
+  .day__rail::before{ /* spine */
+    content:"";position:absolute;right:0;top:7px;bottom:-26px;width:2px;
+    background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 13px)}
+  .day:last-child .day__rail::before{display:none}
+  .day__dot{position:absolute;right:-6px;top:5px;width:13px;height:13px;border-radius:50%;
+    background:var(--c,var(--lagoon));box-shadow:0 0 0 4px var(--sand);z-index:2}
+  .day__date{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:20px;
+    line-height:1;color:var(--ink)}
+  .day__dow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);margin-top:5px}
+  .day__card{background:var(--shell);border:1px solid var(--line);border-left:3px solid var(--c,var(--lagoon));
+    border-radius:14px;padding:17px 20px;transition:.25s var(--ease)}
+  .day__card:hover{transform:translateY(-2px);box-shadow:0 12px 30px -18px rgba(10,42,48,.4)}
+  .day__top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:7px}
+  .day__title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18.5px;
+    letter-spacing:-.01em}
+  .badge{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;
+    text-transform:uppercase;padding:3px 9px;border-radius:99px;font-weight:700;
+    color:#fff;background:var(--c,var(--lagoon));white-space:nowrap}
+  .day__prog{font-size:14.5px;color:#36474B}
+  .day__stay{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);
+    margin-top:9px;display:flex;align-items:center;gap:6px}
+
+  /* ---------- SPOTS ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;
+    border:1px solid var(--line);background:var(--shell);color:var(--muted);
+    padding:8px 15px;border-radius:99px;cursor:pointer;transition:.2s var(--ease);
+    text-transform:uppercase}
+  .chip:hover{border-color:var(--lagoon);color:var(--ink)}
+  .chip.is-on{background:var(--ink);color:var(--sand);border-color:var(--ink)}
+  .chip .n{opacity:.6;margin-left:5px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .spot{background:var(--shell);border:1px solid var(--line);border-radius:16px;
+    padding:18px 19px;display:flex;flex-direction:column;gap:9px;transition:.25s var(--ease)}
+  .spot:hover{transform:translateY(-3px);box-shadow:0 16px 36px -22px rgba(10,42,48,.5);
+    border-color:#D8CDBA}
+  .spot__top{display:flex;align-items:center;gap:9px}
+  .spot__emoji{font-size:21px;line-height:1}
+  .spot__isle{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:99px;
+    color:#fff;font-weight:700;background:var(--ic,var(--lagoon))}
+  .spot__name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;
+    letter-spacing:-.01em;line-height:1.15}
+  .spot__cat{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--lagoon-deep)}
+  .spot__note{font-size:13.7px;color:#41545A;flex:1}
+  .spot__map{align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--lagoon);
+    padding-bottom:1px;transition:.2s var(--ease)}
+  .spot__map:hover{color:var(--lagoon-deep);gap:8px}
+  .empty{color:var(--muted);font-size:15px;padding:30px 0}
+
+  /* ---------- CHECKLISTS ---------- */
+  .ck-overall{display:flex;align-items:center;gap:16px;background:var(--shell);
+    border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-bottom:26px;
+    flex-wrap:wrap}
+  .ck-overall__bar{flex:1;min-width:180px;height:9px;border-radius:99px;background:#E9E0CF;
+    overflow:hidden}
+  .ck-overall__fill{height:100%;width:0;border-radius:99px;
+    background:linear-gradient(90deg,var(--lagoon),var(--sun));transition:width .5s var(--ease)}
+  .ck-overall__txt{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700}
+  .ck-reset{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;
+    letter-spacing:.05em;background:none;border:1px solid var(--line);color:var(--muted);
+    padding:7px 13px;border-radius:99px;cursor:pointer;transition:.2s var(--ease)}
+  .ck-reset:hover{border-color:var(--coral);color:var(--coral)}
+  .ck-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .ck-col{background:var(--shell);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .ck-col__h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;
+    margin-bottom:14px}
+  .ck-col__h h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px}
+  .ck-col__h .c{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+  .ck-item{display:flex;gap:11px;align-items:flex-start;padding:9px 0;cursor:pointer;
+    border-top:1px solid var(--line)}
+  .ck-item:first-of-type{border-top:none}
+  .ck-box{flex:0 0 20px;width:20px;height:20px;border-radius:6px;border:2px solid #CBC0AC;
+    margin-top:1px;display:grid;place-items:center;transition:.18s var(--ease);
+    background:var(--sand)}
+  .ck-item input{position:absolute;opacity:0;pointer-events:none}
+  .ck-item input:checked + .ck-box{background:var(--lagoon);border-color:var(--lagoon)}
+  .ck-box svg{width:12px;height:12px;opacity:0;transform:scale(.5);transition:.18s var(--ease)}
+  .ck-item input:checked + .ck-box svg{opacity:1;transform:scale(1)}
+  .ck-label{font-size:13.8px;color:#36474B;transition:.18s var(--ease)}
+  .ck-item input:checked ~ .ck-label{color:var(--muted);text-decoration:line-through}
+  .ck-item:focus-within .ck-box{box-shadow:0 0 0 3px rgba(17,167,156,.3)}
+
+  /* ---------- FOOTER ---------- */
+  .footer{margin-top:70px;padding:54px 0 60px;background:var(--abyss);color:#CFE2E0}
+  .footer__in{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:flex;
+    justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .footer h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;color:#FCFAF5;
+    font-size:30px;letter-spacing:-.01em;margin-bottom:8px}
+  .footer p{font-size:14px;color:#8FB4B1;max-width:380px}
+  .footer__meta{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;
+    text-align:right;color:#7FA8A4;line-height:1.9}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(18px)}
+  .reveal.in{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease)}
+
+  @media (max-width:680px){
+    .day{grid-template-columns:64px 1fr;gap:14px}
+    .day__rail{padding-right:16px}
+    .day__date{font-size:16px}
+    .nav__brand span{display:none}
+    .hero__sub{font-size:14px}
+    .footer__in{flex-direction:column;align-items:flex-start}
+    .footer__meta{text-align:left}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="wrap hero__top">
+    <span>Carnet de route</span>
+    <span class="moon">🌑 → 🌕 <span>planifié à la lune</span></span>
+  </div>
+  <div class="wrap hero__main">
+    <span class="eyebrow">Golfe de Thaïlande · Saison verte</span>
+    <h1>Thaï<em>lande</em></h1>
+    <div class="hero__sub">
+      <span><b>Le plan</b> — 4 → 24 août 2026</span>
+      <span>Arrivée Bangkok 12h35 · Départ 22h35</span>
+    </div>
+    <div class="hero__stats">
+      <span><b>20</b>nuits</span>
+      <span><b>4</b>escales</span>
+      <span><b>40</b>spots</span>
+      <span><b>3</b>îles</span>
+    </div>
+  </div>
+  <div class="wrap hero__route">
+    <div class="route" id="route"></div>
+  </div>
+</header>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <div class="nav__in">
+    <div class="nav__brand">🌴 <span>Thaïlande · Le plan</span></div>
+    <div class="nav__links">
+      <a href="#agenda">Agenda</a>
+      <a href="#spots">Spots</a>
+      <a href="#checklists">Checklists</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- ===== AGENDA ===== -->
+  <section class="section" id="agenda">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-head__l">
+          <div class="sec-num">01 — Le cap</div>
+          <h2>L'agenda, jour par jour</h2>
+          <p>Le fil du voyage, du débarquement à Bangkok jusqu'au retour. Les activités se calent le matin (la pluie de saison verte tombe l'après-midi), les ferries jamais collés à un vol.</p>
+        </div>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== SPOTS ===== -->
+  <section class="section" id="spots">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-head__l">
+          <div class="sec-num">02 — Le terrain</div>
+          <h2>Spots &amp; activités</h2>
+          <p>Tout ce qu'il y a à faire, rangé par île. Chaque carte ouvre le lieu dans Google Maps. Filtre par escale ci-dessous.</p>
+        </div>
+      </div>
+      <div class="filters" id="filters"></div>
+      <div class="grid" id="spotGrid"></div>
+      <p class="empty" id="spotEmpty" style="display:none">Aucun spot dans ce filtre.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== CHECKLISTS ===== -->
+  <section class="section" id="checklists">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-head__l">
+          <div class="sec-num">03 — Les préparatifs</div>
+          <h2>Checklists</h2>
+          <p>Avant le départ, l'admin, les bagages, et sur place. Coche au fur et à mesure — ça reste enregistré sur ton appareil.</p>
+        </div>
+      </div>
+      <div class="ck-overall reveal">
+        <div class="ck-overall__txt" id="ckPct">0 %</div>
+        <div class="ck-overall__bar"><div class="ck-overall__fill" id="ckFill"></div></div>
+        <button class="ck-reset" id="ckReset">Tout décocher</button>
+      </div>
+      <div class="ck-cols" id="ckCols"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__in">
+    <div>
+      <h3>Bon voyage 🌴</h3>
+      <p>Trois semaines dans le Golfe, à la bonne saison et sur la bonne côte. Reste plus qu'à embarquer.</p>
+    </div>
+    <div class="footer__meta">
+      BANGKOK · KOH SAMUI<br>KOH PHANGAN · KOH TAO<br>04 — 24 AOÛT 2026
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------------- DATA ---------------- */
+const ISLE_COLOR = {
+  "Bangkok":"var(--bangkok)","Koh Samui":"var(--samui)","Koh Phangan":"var(--phangan)",
+  "Koh Tao":"var(--tao)","Ang Thong":"var(--angthong)","Khao Sok":"var(--khaosok)","Transfert":"var(--transfert)"
+};
+const CAT_EMOJI = {
+  "Plage":"🏖️","Snorkel & plongée":"🤿","Viewpoint":"🌄","Bar & resto":"🍹",
+  "Cascade":"💦","Excursion":"⛵","Temple":"🛕","Marché":"🛍️","Sortie":"🎉"
+};
+
+const ROUTE = ["Bangkok","Koh Samui","Koh Phangan","Koh Tao","Bangkok"];
+
+const AGENDA = [
+  {d:"04",dow:"Mar",e:"Bangkok",t:"Arrivée à Bangkok",p:"Atterrissage 12h35 à Suvarnabhumi. On récupère du vol long-courrier, on pose les sacs. Si on tient debout : street food à Chinatown le soir.",s:"Bangkok · Sukhumvit"},
+  {d:"05",dow:"Mer",e:"Transfert",t:"Cap au sud → Koh Samui",p:"Vol du matin vers Koh Samui (ou Surat Thani + ferry). Installation à Bophut, première baignade, repérage du coin.",s:"Koh Samui · Bophut"},
+  {d:"06",dow:"Jeu",e:"Koh Samui",t:"Ang Thong (si beau temps)",p:"Excursion au parc marin d'Ang Thong : lagon émeraude, kayak, viewpoint. À caler sur un jour de ciel dégagé — météo moyenne ? On inverse avec un autre jour Samui.",s:"Koh Samui · Bophut"},
+  {d:"07",dow:"Ven",e:"Koh Samui",t:"Tour de l'île & viewpoints",p:"Big Buddha & Wat Plai Laem, cascades de Na Muang, tour tranquille. Coucher de soleil et cocktails à 4 Spices ou The Cocoon.",s:"Koh Samui · Bophut"},
+  {d:"08",dow:"Sam",e:"Koh Samui",t:"Plage & dernier soir",p:"Journée plage ou beach club, massage. Dernier soir : Chaweng si on veut sortir.",s:"Koh Samui · Bophut"},
+  {d:"09",dow:"Dim",e:"Transfert",t:"Ferry → Koh Phangan",p:"Ferry rapide (30-45 min). Installation côté ouest, à Sri Thanu. Apéro au coucher du soleil.",s:"Koh Phangan · Sri Thanu"},
+  {d:"10",dow:"Lun",e:"Koh Phangan",t:"Nord & snorkeling",p:"Mae Haad + le banc de sable de Koh Ma — le meilleur snorkel de l'île, coraux dès la plage. Vérifier les marées.",s:"Koh Phangan · Sri Thanu"},
+  {d:"11",dow:"Mar",e:"Koh Phangan",t:"Côte ouest & couchers de soleil",p:"Secret Beach, Haad Yao, Haad Son. Les plus beaux couchers de soleil de l'île, beach bars les pieds dans le sable.",s:"Koh Phangan · Sri Thanu"},
+  {d:"12",dow:"Mer",e:"Koh Phangan",t:"Est bohème + Black Moon",p:"Haad Yuan en taxi-boat (surtout pas en scooter, piste cassée). Soir : Black Moon Party (~12-13 août) — psytrance dans une clairière de jungle, vibe underground.",s:"Koh Phangan · Sri Thanu"},
+  {d:"13",dow:"Jeu",e:"Koh Phangan",t:"Jungle & cascades",p:"Cascade Phaeng + Domsila viewpoint, journée nature au cœur de l'île.",s:"Koh Phangan · Sri Thanu"},
+  {d:"14",dow:"Ven",e:"Koh Phangan",t:"Bottle Beach + soirée",p:"Journée à Bottle Beach (accès bateau, sublime). Soir : Guy's Bar à Haad Yuan — fête de falaise jungle, tous les vendredis. (Half Moon le 5 & 21, Full Moon le 28 : hors fenêtre.)",s:"Koh Phangan · Sri Thanu"},
+  {d:"15",dow:"Sam",e:"Transfert",t:"Ferry → Koh Tao",p:"Ferry vers Koh Tao (1h-1h30). Installation à Sairee. Passer réserver l'Open Water ou les fun dives.",s:"Koh Tao · Sairee"},
+  {d:"16",dow:"Dim",e:"Koh Tao",t:"Plongée / snorkel — jour 1",p:"Début de l'Open Water (si certif) ou première sortie / snorkel. Sairee le soir, fire shows.",s:"Koh Tao · Sairee"},
+  {d:"17",dow:"Lun",e:"Koh Tao",t:"Koh Nang Yuan",p:"Les 3 îlots reliés par un banc de sable + le viewpoint. Snorkel carte postale, la photo iconique de Koh Tao.",s:"Koh Tao · Sairee"},
+  {d:"18",dow:"Mar",e:"Koh Tao",t:"Plongée & baies",p:"Sortie sur les bons spots (Sail Rock, Chumphon Pinnacle) ou snorkel à Tanote Bay et Shark Bay.",s:"Koh Tao · Sairee"},
+  {d:"19",dow:"Mer",e:"Koh Tao",t:"Dernière plongée & chill",p:"Dernière plongée le matin (pas d'avion dans les 18-24h après — large ici). Après-midi détente, derniers achats.",s:"Koh Tao · Sairee"},
+  {d:"20",dow:"Jeu",e:"Transfert",t:"Retour → Bangkok",p:"Ferry Koh Tao → Samui puis vol vers Bangkok. Installation, soir tranquille, repérage du quartier.",s:"Bangkok · Sukhumvit"},
+  {d:"21",dow:"Ven",e:"Bangkok",t:"Temples & fleuve",p:"Le matin : Grand Palais + Wat Pho + Wat Arun (tenue couvrante). Rooftop le soir (Lebua / Vertigo).",s:"Bangkok · Sukhumvit"},
+  {d:"22",dow:"Sam",e:"Bangkok",t:"Marchés & vie nocturne",p:"Chatuchak le matin (week-end), Jim Thompson House pour souffler. Soir : marché de nuit Jodd Fairs puis sortie.",s:"Bangkok · Sukhumvit"},
+  {d:"23",dow:"Dim",e:"Bangkok",t:"Muay Thai & massage",p:"Massage thaï, ICONSIAM ou Golden Mount. Soir : combats de Muay Thai au stade Rajadamnern. Dernier festin street food.",s:"Bangkok · Sukhumvit"},
+  {d:"24",dow:"Lun",e:"Bangkok",t:"Départ",p:"Journée libre / récup. Être à Suvarnabhumi vers 19h30 (comptoirs Condor N5-N9). Vol 22h35. ✈️",s:"—"}
+];
+
+const SPOTS = [
+  // Koh Samui
+  {n:"Ang Thong Marine Park",i:"Ang Thong",c:"Excursion",note:"42 îles karstiques, le lagon émeraude qui a inspiré « The Beach », kayak, viewpoint. Excursion journée depuis Samui, un jour de beau temps.",m:"https://maps.google.com/?cid=1774798721901172880"},
+  {n:"Fisherman's Village (Bophut)",i:"Koh Samui",c:"Bar & resto",note:"Ruelle bord de mer pleine de restos et bars. Marché le vendredi soir. Bar Garnish (cocktails créatifs) à l'étage.",m:"https://www.google.com/maps/search/?api=1&query=Fisherman+Village+Bophut+Koh+Samui"},
+  {n:"The Cocoon Viewpoint",i:"Koh Samui",c:"Viewpoint",note:"Resto avec vue panoramique sur l'île et la mer. Parfait au coucher de soleil.",m:"https://maps.google.com/?cid=900251576794148564"},
+  {n:"4 Spices",i:"Koh Samui",c:"Bar & resto",note:"Fusion + cocktails, vue sur Bangrak Bay. Très bien noté, top pour un premier ou dernier soir.",m:"https://maps.google.com/?cid=10937680934952464171"},
+  {n:"Big Buddha (Wat Phra Yai)",i:"Koh Samui",c:"Temple",note:"Le grand Bouddha doré, emblème du nord de l'île. Rapide à voir, joli au coucher de soleil. Tenue couvrante.",m:"https://www.google.com/maps/search/?api=1&query=Big+Buddha+Koh+Samui"},
+  {n:"Wat Plai Laem",i:"Koh Samui",c:"Temple",note:"Temple coloré au bord de l'eau, immense statue de Guanyin à 18 bras. Gratuit, ~1h, à coupler avec le Big Buddha juste à côté.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Plai+Laem&query_place_id=ChIJQc1OzAjwVDARv0towXonUM8"},
+  {n:"Cascades de Na Muang",i:"Koh Samui",c:"Cascade",note:"Deux cascades dans la jungle, bien remplies en saison verte. Baignade possible.",m:"https://www.google.com/maps/search/?api=1&query=Na+Muang+Waterfall+Koh+Samui"},
+  {n:"Hin Ta Hin Yai",i:"Koh Samui",c:"Viewpoint",note:"Les rochers « Grand-père / Grand-mère » (assez suggestifs) au bord de la mer. Arrêt photo rapide et gratuit, glace coco.",m:"https://www.google.com/maps/search/?api=1&query=Hin+Ta+Hin+Yai&query_place_id=ChIJi_MqvFPyVDARyZQrKj0jYtw"},
+  {n:"Lamai Beach",i:"Koh Samui",c:"Plage",note:"La 2e grande plage de Samui, plus chill que Chaweng, superbe lumière au sud. Vagues parfois fortes.",m:"https://www.google.com/maps/search/?api=1&query=Lamai+Beach&query_place_id=ChIJRaxlSU_yVDARaN2w-bDYhfk"},
+  {n:"Chaweng Beach",i:"Koh Samui",c:"Sortie",note:"La plage la plus animée + le cœur de la vie nocturne de Samui. Bars, clubs, restos.",m:"https://www.google.com/maps/search/?api=1&query=Chaweng+Beach+Koh+Samui"},
+  // Koh Phangan
+  {n:"Secret Beach & Lost 'N Found",i:"Koh Phangan",c:"Plage",note:"Côte ouest, un des plus beaux couchers de soleil + beach bar. Cash uniquement, fermé le mercredi. Arriver tôt.",m:"https://maps.google.com/?cid=4587116298742308382"},
+  {n:"Mae Haad & banc de sable Koh Ma",i:"Koh Phangan",c:"Snorkel & plongée",note:"Le meilleur snorkel de l'île : coraux dès la plage, banc de sable vers Koh Ma à marée basse.",m:"https://maps.google.com/?cid=2805075301471588314"},
+  {n:"Haad Yuan",i:"Koh Phangan",c:"Plage",note:"Côte est bohème, plage isolée, taxi-boat depuis Haad Rin (~300 THB). Surtout pas en scooter, la piste est dangereuse.",m:"https://maps.google.com/?cid=953476580253672441"},
+  {n:"Thong Nai Pan (Noi & Yai)",i:"Koh Phangan",c:"Plage",note:"Souvent citée comme LA plus belle plage de Phangan : sable fin, eau claire, côte est calme. Courant parfois fort.",m:"https://www.google.com/maps/search/?api=1&query=Thong+Nai+Pan&query_place_id=ChIJWdrxU-oCVTARRWiblhgBoPs"},
+  {n:"Bottle Beach (Haad Khuat)",i:"Koh Phangan",c:"Plage",note:"Nord reculé, accès en bateau, une des plus belles plages de l'île. Quasi sauvage, journée déconnexion.",m:"https://www.google.com/maps/search/?api=1&query=Bottle+Beach+Koh+Phangan"},
+  {n:"Haad Yao",i:"Koh Phangan",c:"Plage",note:"Ouest, belle plage chill, bars et restos pieds dans le sable, beaux couchers de soleil.",m:"https://www.google.com/maps/search/?api=1&query=Haad+Yao+Koh+Phangan"},
+  {n:"Cascade Phaeng & Domsila Viewpoint",i:"Koh Phangan",c:"Viewpoint",note:"Cœur jungle de l'île. Petite rando jusqu'au viewpoint, vue plongeante. Cascade plus belle après la pluie.",m:"https://www.google.com/maps/search/?api=1&query=Phaeng+Waterfall+Domsila+Viewpoint+Koh+Phangan"},
+  {n:"Amsterdam Bar (sunset)",i:"Koh Phangan",c:"Bar & resto",note:"Bar perché, le spot coucher de soleil de l'île, piscine + vue. Entrée payante (~300-400 THB) et boissons chères, mais ça vaut le coup une fois.",m:"https://www.google.com/maps/search/?api=1&query=Amsterdam+Bar+Koh+Phangan&query_place_id=ChIJJ2p6NW7-VDARn6PGkxu21UE"},
+  {n:"Haad Rin",i:"Koh Phangan",c:"Sortie",note:"La plage des fêtes (Full / Half Moon). Animée tous les soirs. Chaussures fermées si soirée (verre cassé sur le sable).",m:"https://www.google.com/maps/search/?api=1&query=Haad+Rin+Koh+Phangan"},
+  // Koh Tao
+  {n:"Sairee Beach",i:"Koh Tao",c:"Sortie",note:"Le cœur de Koh Tao : bars pieds dans le sable, fire shows, restos, écoles de plongée. Ambiance facile le soir.",m:"https://www.google.com/maps/search/?api=1&query=Sairee+Beach+Koh+Tao"},
+  {n:"Koh Nang Yuan",i:"Koh Tao",c:"Snorkel & plongée",note:"3 îlots reliés par un banc de sable + viewpoint. Snorkel sublime. Petit droit d'entrée, pas de plastique.",m:"https://www.google.com/maps/search/?api=1&query=Koh+Nang+Yuan"},
+  {n:"Tanote Bay",i:"Koh Tao",c:"Snorkel & plongée",note:"Une des plus belles baies : snorkel + gros rocher d'où sauter. Entrée dans l'eau rocheuse (chaussures d'eau utiles), route raide.",m:"https://www.google.com/maps/search/?api=1&query=Tanote+Bay&query_place_id=ChIJ-YFPKrGhVTARMXNC_vpGLME"},
+  {n:"Shark Bay (Aow Leuk)",i:"Koh Tao",c:"Snorkel & plongée",note:"Snorkel avec requins de récif (inoffensifs) et tortues, surtout tôt le matin. Entrée partagée avec le John-Suwan viewpoint.",m:"https://www.google.com/maps/search/?api=1&query=Shark+Bay+Koh+Tao&query_place_id=ChIJd-gGE52hVTARaXCHLFy29Lg"},
+  {n:"Sail Rock (plongée)",i:"Koh Tao",c:"Snorkel & plongée",note:"Le meilleur site de plongée du coin, en mer entre Tao et Phangan (cheminée verticale, barracudas). Sortie en bateau.",m:"https://www.google.com/maps/search/?api=1&query=Sail+Rock+dive+site+Koh+Tao"},
+  {n:"Big Blue Diving",i:"Koh Tao",c:"Snorkel & plongée",note:"Énorme école très bien notée (Open Water ~3-4j). Autres centres solides : Roctopus, Koh Tao Divers, Scuba Birds.",m:"https://maps.google.com/?cid=16581665598804254942"},
+  {n:"John-Suwan Viewpoint",i:"Koh Tao",c:"Viewpoint",note:"Vue sur les baies jumelles au sud. Courte montée, top en fin de journée. Petit droit d'accès.",m:"https://www.google.com/maps/search/?api=1&query=John-Suwan+Viewpoint+Koh+Tao"},
+  // Bangkok
+  {n:"Grand Palais & Wat Phra Kaew",i:"Bangkok",c:"Temple",note:"L'incontournable n°1. Le matin avant la chaleur et la foule. Tenue couvrante stricte (épaules + genoux).",m:"https://www.google.com/maps/search/?api=1&query=Grand+Palace+Bangkok"},
+  {n:"Wat Pho",i:"Bangkok",c:"Temple",note:"Le Bouddha couché géant + le berceau du massage thaï. Juste à côté du Grand Palais.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Pho+Bangkok"},
+  {n:"Wat Arun",i:"Bangkok",c:"Temple",note:"Le temple de l'aube, de l'autre côté du fleuve (petite traversée en bateau). Magnifique en fin de journée.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Arun+Bangkok"},
+  {n:"Wat Saket (Golden Mount)",i:"Bangkok",c:"Temple",note:"La seule colline de Bangkok : 344 marches jusqu'au stupa doré, le meilleur panorama sur la ville. ~100 THB, peu bondé.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Saket+Golden+Mount&query_place_id=ChIJP-MtN12Z4jARlEBmga-oF4w"},
+  {n:"Jim Thompson House",i:"Bangkok",c:"Sortie",note:"Oasis culturelle : maisons en teck + jardin tropical de l'Américain qui a relancé la soie thaï (disparu en 1967). Visite guidée ~250 THB.",m:"https://www.google.com/maps/search/?api=1&query=Jim+Thompson+House&query_place_id=ChIJWVT7hDKZ4jARGJOhe21RhOk"},
+  {n:"Chinatown (Yaowarat)",i:"Bangkok",c:"Bar & resto",note:"La meilleure street food de la ville, ambiance néons le soir. À faire absolument, le ventre vide.",m:"https://www.google.com/maps/search/?api=1&query=Yaowarat+Chinatown+Bangkok"},
+  {n:"Chatuchak Weekend Market",i:"Bangkok",c:"Marché",note:"Marché géant (15 000 stands), week-end seulement. Le matin pour éviter la fournaise.",m:"https://www.google.com/maps/search/?api=1&query=Chatuchak+Weekend+Market+Bangkok"},
+  {n:"Jodd Fairs",i:"Bangkok",c:"Marché",note:"Le marché de nuit le plus tendance. Street food, bières, ambiance. Parfait pour une soirée décontractée.",m:"https://www.google.com/maps/search/?api=1&query=Jodd+Fairs+Bangkok"},
+  {n:"ICONSIAM",i:"Bangkok",c:"Marché",note:"Méga-centre au bord du fleuve avec un marché flottant couvert (SookSiam), clim bienvenue, et show de fontaines le soir. Accessible via la Gold Line.",m:"https://www.google.com/maps/search/?api=1&query=ICONSIAM&query_place_id=ChIJFRjwgc2Z4jAR9JIadoa9YBY"},
+  {n:"Stade Rajadamnern (Muay Thai)",i:"Bangkok",c:"Sortie",note:"Soirée combats de boxe thaï dans un stade historique. Bien plus marquant que ça en a l'air. Réserver en avance.",m:"https://www.google.com/maps/search/?api=1&query=Rajadamnern+Stadium+Bangkok"},
+  {n:"Khao San Road",i:"Bangkok",c:"Sortie",note:"La rue backpacker mythique : street food, bars, tatouages, chaos festif. À faire une fois pour l'ambiance.",m:"https://www.google.com/maps/search/?api=1&query=Khao+San+Road&query_place_id=ChIJDR23yhKZ4jARdqd5AHsct0A"},
+  {n:"Lebua / Sky Bar",i:"Bangkok",c:"Bar & resto",note:"Le rooftop iconique (Very Bad Trip 2). Cher mais la vue vaut le coup une fois. Dress code smart. Alternatives : Vertigo, Octave.",m:"https://www.google.com/maps/search/?api=1&query=Lebua+Sky+Bar+Bangkok"},
+  {n:"Maeklong + Amphawa (journée)",i:"Bangkok",c:"Excursion",note:"Hors Bangkok (~1h-1h30) : marché Maeklong où le train passe AU MILIEU des étals, puis marché flottant d'Amphawa (lucioles le soir). Amphawa = ven-dim.",m:"https://www.google.com/maps/search/?api=1&query=Maeklong+Railway+Market&query_place_id=ChIJ10pbl47T4jAR7qFFA1HY2Ds"},
+  // Khao Sok
+  {n:"Khao Sok / Lac Cheow Lan",i:"Khao Sok",c:"Excursion",note:"OPTION continent (via Surat Thani) : jungle, falaises karstiques, maisons flottantes sur le lac, kayak, safaris. Sublime en saison verte.",m:"https://maps.google.com/?cid=14978000754350885459"}
+];
+
+const CHECKLISTS = [
+  {h:"Avant le départ",items:["Vérifier la validité du passeport (6 mois après l'entrée)","Remplir le TDAC sur tdac.immigration.go.th (J-3, sans accents, les 3)","Réserver les vols domestiques (Samui direct ou Surat Thani)","Réserver la 1ère nuit à Bangkok (4 août)","Soirée Phangan : Black Moon (~12-13) + Guy's Bar Haad Yuan (ven 14) — reconfirmer & réserver","Réserver le logement Phangan autour de la date de soirée","Réserver les ferries des dates clés (soirée + jour de retour)","Souscrire une assurance voyage AVEC clause scooter","Obtenir un permis international (si on loue un scooter)","Décider qui passe l'Open Water à Koh Tao","Réserver les billets Muay Thai (Rajadamnern) — optionnel"]},
+  {h:"Argent & admin",items:["Prévenir les banques / Revolut du voyage","Prévoir 2 moyens de paiement (carte + cash de secours)","Commander une eSIM (ou SIM AIS/True à l'aéroport)","Télécharger Maps hors-ligne + 12Go Asia + Grab","Mettre en favori : QR TDAC, billet retour, 1ère résa","Remplir le formulaire API Condor (avant chaque vol)"]},
+  {h:"Bagages",items:["Crème solaire (chère sur place)","Répulsif anti-moustiques (dengue en saison verte)","Trousse pharma (anti-diarrhée, pansements, paracétamol)","Vêtements couvrants pour les temples","Chaussures fermées légères (soirées plage + viewpoints)","Sac sec / pochette étanche (bateaux, snorkel)","Maillot x2, lunettes de soleil, casquette","Adaptateur de prise"]},
+  {h:"Sur place",items:["Activer l'eSIM / acheter la SIM à l'arrivée","Retirer du cash en grosse coupure (frais ATM ~220 THB)","Réserver l'Open Water / fun dives en arrivant à Koh Tao","Réserver l'excursion Ang Thong (un jour de beau temps)","Vérifier les marées avant Mae Haad / Koh Ma","Casque + prudence à chaque scooter, eau en bouteille"]}
+];
+
+/* ---------------- RENDER ---------------- */
+const $ = s => document.querySelector(s);
+
+// route
+(()=>{
+  const r = $("#route"); let h="";
+  ROUTE.forEach((name,idx)=>{
+    h += `<div class="route__node"><span class="route__dot"></span><span class="route__name">${name}</span></div>`;
+    if(idx<ROUTE.length-1) h += `<span class="route__seg"></span>`;
+  });
+  r.innerHTML = h;
+})();
+
+// agenda
+(()=>{
+  const tl = $("#timeline");
+  tl.innerHTML = AGENDA.map(a=>{
+    const col = ISLE_COLOR[a.e];
+    return `<div class="day reveal" style="--c:${col}">
+      <div class="day__rail">
+        <span class="day__dot"></span>
+        <div class="day__date">${a.d}<span style="font-size:12px;color:var(--muted)"> 08</span></div>
+        <div class="day__dow">${a.dow}</div>
+      </div>
+      <div class="day__card">
+        <div class="day__top">
+          <span class="day__title">${a.t}</span>
+          <span class="badge">${a.e}</span>
+        </div>
+        <div class="day__prog">${a.p}</div>
+        ${a.s!=="—"?`<div class="day__stay">📍 ${a.s}</div>`:""}
+      </div>
+    </div>`;
+  }).join("");
+})();
+
+// spots + filters
+(()=>{
+  const order = ["Koh Samui","Koh Phangan","Koh Tao","Bangkok","Ang Thong","Khao Sok"];
+  const counts = {};
+  SPOTS.forEach(s=>counts[s.i]=(counts[s.i]||0)+1);
+  const fc = $("#filters");
+  let chips = `<button class="chip is-on" data-f="all">Tous<span class="n">${SPOTS.length}</span></button>`;
+  order.forEach(i=>{ if(counts[i]) chips += `<button class="chip" data-f="${i}">${i}<span class="n">${counts[i]}</span></button>`; });
+  fc.innerHTML = chips;
+
+  const grid = $("#spotGrid");
+  function card(s){
+    return `<div class="spot reveal in" data-i="${s.i}">
+      <div class="spot__top">
+        <span class="spot__emoji">${CAT_EMOJI[s.c]||"📍"}</span>
+        <span class="spot__cat">${s.c}</span>
+        <span class="spot__isle" style="--ic:${ISLE_COLOR[s.i]}">${s.i}</span>
+      </div>
+      <div class="spot__name">${s.n}</div>
+      <div class="spot__note">${s.note}</div>
+      <a class="spot__map" href="${s.m}" target="_blank" rel="noopener">Voir sur Maps ↗</a>
+    </div>`;
+  }
+  function render(f){
+    const list = f==="all"?SPOTS:SPOTS.filter(s=>s.i===f);
+    grid.innerHTML = list.map(card).join("");
+    $("#spotEmpty").style.display = list.length?"none":"block";
+  }
+  render("all");
+  fc.addEventListener("click",e=>{
+    const b = e.target.closest(".chip"); if(!b) return;
+    fc.querySelectorAll(".chip").forEach(c=>c.classList.remove("is-on"));
+    b.classList.add("is-on");
+    render(b.dataset.f);
+  });
+})();
+
+// checklists + persistence
+(()=>{
+  const KEY="thai-plan-checklist-v1";
+  let state={};
+  try{ state = JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ state={}; }
+  const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} };
+
+  const cols = $("#ckCols");
+  const check = `<svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  cols.innerHTML = CHECKLISTS.map((col,ci)=>{
+    const items = col.items.map((it,ii)=>{
+      const id=`ck-${ci}-${ii}`, on=state[id]?"checked":"";
+      return `<label class="ck-item" for="${id}">
+        <input type="checkbox" id="${id}" data-id="${id}" ${on}>
+        <span class="ck-box">${check}</span>
+        <span class="ck-label">${it}</span>
+      </label>`;
+    }).join("");
+    return `<div class="ck-col">
+      <div class="ck-col__h"><h3>${col.h}</h3><span class="c" data-col="${ci}"></span></div>
+      ${items}
+    </div>`;
+  }).join("");
+
+  const fill=$("#ckFill"), pct=$("#ckPct");
+  function refresh(){
+    let total=0,done=0;
+    CHECKLISTS.forEach((col,ci)=>{
+      let cd=0;
+      col.items.forEach((_,ii)=>{ total++; if(state[`ck-${ci}-${ii}`]){done++;cd++;} });
+      const el=cols.querySelector(`[data-col="${ci}"]`); if(el) el.textContent=`${cd}/${col.items.length}`;
+    });
+    const p = total?Math.round(done/total*100):0;
+    fill.style.width=p+"%"; pct.textContent=p+" %";
+  }
+  cols.addEventListener("change",e=>{
+    const box=e.target.closest("input[data-id]"); if(!box) return;
+    state[box.dataset.id]=box.checked; save(); refresh();
+  });
+  $("#ckReset").addEventListener("click",()=>{
+    state={}; save();
+    cols.querySelectorAll("input[data-id]").forEach(b=>b.checked=false);
+    refresh();
+  });
+  refresh();
+})();
+
+// scroll reveal
+(()=>{
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches){
+    document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in")); return;
+  }
+  const io=new IntersectionObserver((ents)=>{
+    ents.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+  },{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>
