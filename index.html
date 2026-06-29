@@ -101,6 +101,13 @@
     text-transform:uppercase;text-decoration:none;color:var(--muted);
     padding:7px 13px;border-radius:99px;transition:.2s var(--ease);white-space:nowrap}
   .nav__links a:hover{color:var(--ink);background:rgba(17,167,156,.1)}
+  .nav__links a.is-active{color:var(--ink);background:rgba(17,167,156,.14)}
+  .nav__toggle{display:none;flex-direction:column;align-items:center;justify-content:center;
+    gap:5px;width:42px;height:42px;margin-right:-9px;background:none;border:0;cursor:pointer;
+    border-radius:10px;transition:.2s var(--ease)}
+  .nav__toggle:hover{background:rgba(17,167,156,.1)}
+  .nav__toggle span{display:block;width:20px;height:2px;border-radius:2px;background:var(--ink);
+    transition:transform .24s var(--ease),opacity .2s var(--ease)}
 
   /* ---------- SECTIONS ---------- */
   .section{padding:78px 0 14px}
@@ -303,10 +310,20 @@
     .day__card{padding:15px 16px}
     .day__title{font-size:17px}
     .day__prog{font-size:14px}
-    /* nav: compact, brand emoji only, links scroll if needed */
-    .nav__brand span{display:none}
-    .nav__links{gap:4px}
-    .nav__links a{padding:6px 11px;font-size:11.5px}
+    /* nav: hamburger toggle + dropdown panel */
+    .nav__toggle{display:flex}
+    .nav__links{
+      position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:2px;overflow:visible;
+      background:rgba(244,238,226,.97);backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);padding:8px 16px 14px;
+      box-shadow:0 18px 30px -22px rgba(10,42,48,.5);
+      transform:translateY(-10px);opacity:0;pointer-events:none;
+      transition:transform .24s var(--ease),opacity .24s var(--ease)}
+    .nav.open .nav__links{transform:none;opacity:1;pointer-events:auto}
+    .nav__links a{padding:12px 14px;font-size:13px;border-radius:12px}
+    .nav.open .nav__toggle span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav.open .nav__toggle span:nth-child(2){opacity:0}
+    .nav.open .nav__toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
     /* sections */
     .section{padding:52px 0 10px}
     .sec-head h2{font-size:clamp(30px,8.5vw,40px)}
@@ -366,13 +383,16 @@
 <nav class="nav">
   <div class="nav__in">
     <div class="nav__brand">🌴 <span>Thaïlande · Le plan</span></div>
-    <div class="nav__links">
+    <div class="nav__links" id="navLinks">
       <a href="#agenda">Agenda</a>
       <a href="#transferts">Transferts</a>
       <a href="#spots">Spots</a>
       <a href="#bonsplans">Bons plans</a>
       <a href="#checklists">Checklists</a>
     </div>
+    <button class="nav__toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
@@ -632,6 +652,24 @@ const $ = s => document.querySelector(s);
     if(idx<ROUTE.length-1) h += `<span class="route__seg"></span>`;
   });
   r.innerHTML = h;
+})();
+
+// nav toggle (mobile menu)
+(()=>{
+  const nav=$(".nav"), tog=$("#navToggle"); if(!nav||!tog) return;
+  const links=$("#navLinks");
+  const set=open=>{ nav.classList.toggle("open",open); tog.setAttribute("aria-expanded",open?"true":"false"); tog.setAttribute("aria-label",open?"Fermer le menu":"Ouvrir le menu"); };
+  tog.addEventListener("click",e=>{ e.stopPropagation(); set(!nav.classList.contains("open")); });
+  links.addEventListener("click",e=>{ if(e.target.closest("a")) set(false); });
+  document.addEventListener("click",e=>{ if(nav.classList.contains("open") && !e.target.closest(".nav__in")) set(false); });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape") set(false); });
+  addEventListener("resize",()=>{ if(innerWidth>680) set(false); });
+  // scroll-spy : highlight the section in view
+  const map={}; links.querySelectorAll("a").forEach(a=>map[a.getAttribute("href").slice(1)]=a);
+  const spy=new IntersectionObserver(ents=>{
+    ents.forEach(en=>{ if(en.isIntersecting){ Object.values(map).forEach(a=>a.classList.remove("is-active")); if(map[en.target.id]) map[en.target.id].classList.add("is-active"); } });
+  },{rootMargin:"-45% 0px -50% 0px",threshold:0});
+  Object.keys(map).forEach(id=>{ const el=document.getElementById(id); if(el) spy.observe(el); });
 })();
 
 // agenda
