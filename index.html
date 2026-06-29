@@ -56,6 +56,10 @@
     text-transform:uppercase;color:rgba(252,250,245,.82)}
   .hero__top .moon{display:inline-flex;gap:8px;align-items:center}
   .hero__main{display:flex;flex-direction:column;gap:18px;margin-top:auto}
+  .hero__cd{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;letter-spacing:.04em;
+    color:var(--abyss);background:var(--sun);padding:7px 14px;border-radius:99px;
+    box-shadow:0 6px 20px -8px rgba(255,177,85,.6)}
   .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.28em;
     text-transform:uppercase;color:var(--sun)}
   .hero h1{
@@ -261,6 +265,39 @@
   .ck-item input:checked ~ .ck-label{color:var(--muted);text-decoration:line-through}
   .ck-item:focus-within .ck-box{box-shadow:0 0 0 3px rgba(17,167,156,.3)}
 
+  /* ---------- INFOS ---------- */
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .info-card{background:var(--shell);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;border-top:3px solid var(--ic,var(--coral))}
+  .info-card h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px;
+    letter-spacing:-.01em;display:flex;align-items:center;gap:9px;margin-bottom:13px;flex-wrap:wrap}
+  .info-card ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .info-card li{font-size:13.8px;color:#36474B;line-height:1.5}
+  .info-card li b{color:var(--ink);font-weight:600}
+  .info-card a{color:var(--lagoon-deep);text-decoration:none;border-bottom:1px solid rgba(12,127,119,.35)}
+  .info-card a:hover{border-bottom-color:var(--lagoon-deep)}
+  .info-card .tel{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--ink);
+    border-bottom:1.5px solid var(--coral);white-space:nowrap}
+  .info-card .tel:hover{color:var(--coral)}
+  .lex{grid-column:1/-1}
+  .lex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px 22px}
+  .lex-grid div{font-size:13.6px;color:#36474B}
+  .lex-grid b{font-family:'JetBrains Mono',monospace;color:var(--lagoon-deep);font-weight:700}
+
+  /* ---------- BUDGET ---------- */
+  .budget{background:var(--shell);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .budget table{width:100%;border-collapse:collapse}
+  .budget td{padding:13px 18px;border-top:1px solid var(--line);font-size:14.5px;color:#36474B}
+  .budget tbody tr:first-child td{border-top:none}
+  .budget thead td{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);background:var(--sand)}
+  .budget td:last-child{text-align:right;font-family:'JetBrains Mono',monospace;font-weight:700;
+    white-space:nowrap;color:var(--ink)}
+  .budget tr.sub td{background:rgba(17,167,156,.08);font-weight:700;color:var(--ink)}
+  .budget tr.total td{background:var(--abyss);color:#FCFAF5}
+  .budget tr.total td:last-child{color:var(--sun)}
+  .budget__note{font-size:13px;color:var(--muted);margin-top:14px;max-width:620px}
+
   /* ---------- FOOTER ---------- */
   .footer{margin-top:70px;padding:54px 0 60px;background:var(--abyss);color:#CFE2E0}
   .footer__in{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:flex;
@@ -361,6 +398,7 @@
     <span class="moon">🏝️ → ⛰️ <span>des îles au nord</span></span>
   </div>
   <div class="wrap hero__main">
+    <span class="hero__cd" id="cd">✈️ Compte à rebours…</span>
     <span class="eyebrow">Du Golfe aux montagnes du Nord · Saison verte</span>
     <h1>Thaï<em>lande</em></h1>
     <div class="hero__sub">
@@ -370,8 +408,8 @@
     <div class="hero__stats">
       <span><b>20</b>nuits</span>
       <span><b>5</b>étapes</span>
-      <span><b>34</b>spots</span>
-      <span><b>43</b>bons plans</span>
+      <span><b>37</b>spots</span>
+      <span><b>46</b>bons plans</span>
     </div>
   </div>
   <div class="wrap hero__route">
@@ -389,6 +427,8 @@
       <a href="#spots">Spots</a>
       <a href="#bonsplans">Bons plans</a>
       <a href="#checklists">Checklists</a>
+      <a href="#infos">Infos</a>
+      <a href="#budget">Budget</a>
     </div>
     <button class="nav__toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
@@ -483,6 +523,111 @@
       <div class="ck-cols" id="ckCols"></div>
     </div>
   </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== INFOS PRATIQUES ===== -->
+  <section class="section" id="infos">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-head__l">
+          <div class="sec-num">06 — En cas de pépin</div>
+          <h2>Infos pratiques &amp; urgences</h2>
+          <p>Les numéros et réflexes à avoir dans le téléphone de chacun (+ une copie papier dans le sac). On prend 2 min avant de partir pour tout caler.</p>
+        </div>
+      </div>
+      <div class="info-grid">
+        <div class="info-card reveal" style="--ic:var(--coral)">
+          <h3>🚨 Urgences</h3>
+          <ul>
+            <li><b>Police touristique</b> (anglophone, 24h/24) : <a class="tel" href="tel:1155">1155</a> — vol, arnaque, passeport perdu. Le réflexe n°1.</li>
+            <li><b>Urgences médicales / ambulance :</b> <a class="tel" href="tel:1669">1669</a></li>
+            <li><b>Police :</b> <a class="tel" href="tel:191">191</a> · <b>Pompiers :</b> <a class="tel" href="tel:199">199</a></li>
+            <li>Appli <b>Thailand Tourist Police</b> : fonctionne même sans SIM thaï.</li>
+          </ul>
+        </div>
+        <div class="info-card reveal" style="--ic:var(--bangkok)">
+          <h3>🇫🇷 Ambassade de France</h3>
+          <ul>
+            <li>35 Charoenkrung Soi 36 (Rue de Brest), Bangrak, Bangkok 10500</li>
+            <li><b>Standard :</b> <a class="tel" href="tel:+6626575100">+66 2 657 5100</a></li>
+            <li><b>Urgence grave hors horaires :</b> <a class="tel" href="tel:+66819944901">+66 81 994 4901</a></li>
+            <li><a href="http://th.ambafrance.org" target="_blank" rel="noopener">th.ambafrance.org</a> · consuls honoraires à Koh Samui &amp; Chiang Mai</li>
+          </ul>
+        </div>
+        <div class="info-card reveal" style="--ic:var(--khaosok)">
+          <h3>🏥 Hôpitaux (Bangkok)</h3>
+          <ul>
+            <li><b>Bumrungrad International :</b> <a class="tel" href="tel:+6620668888">+66 2 066 8888</a></li>
+            <li><b>Bangkok Hospital :</b> <a class="tel" href="tel:+6623103000">+66 2 310 3000</a></li>
+            <li><b>Samitivej Sukhumvit :</b> <a class="tel" href="tel:+6620222222">+66 2 022 2222</a></li>
+            <li>Un <b>Grab vers l'hôpital</b> est souvent plus rapide que l'ambulance (trafic).</li>
+          </ul>
+        </div>
+        <div class="info-card reveal" style="--ic:var(--sun)">
+          <h3>✅ Avant de partir</h3>
+          <ul>
+            <li>S'inscrire sur <b>Ariane</b> (Min. des Affaires étrangères) : alertes sécurité + un proche prévenu.</li>
+            <li><b>Photo passeport + assurance + cartes</b> (recto/verso), envoyée à soi-même et à un proche.</li>
+            <li>Noter le <b>n° d'urgence de l'assurance</b> voyage.</li>
+            <li>Vérifier la couverture <b>rapatriement + frais médicaux</b> (viser large).</li>
+          </ul>
+        </div>
+        <div class="info-card lex reveal" style="--ic:var(--chiangmai)">
+          <h3>🗣️ Mini-lexique thaï <span style="font-weight:400;font-size:12px;color:var(--muted)">— les gars finissent par « khráp »</span></h3>
+          <div class="lex-grid">
+            <div><b>Sawatdee khráp</b> — bonjour / au revoir</div>
+            <div><b>Khòp khun khráp</b> — merci</div>
+            <div><b>Châi / Mâi châi</b> — oui / non</div>
+            <div><b>Thâo rai ?</b> — combien ?</div>
+            <div><b>Phaeng pai</b> — trop cher</div>
+            <div><b>Aròi !</b> — c'est délicieux !</div>
+            <div><b>Mâi phèt</b> — pas épicé</div>
+            <div><b>Phèt nít nòi</b> — un peu épicé</div>
+            <div><b>Chék bin</b> — l'addition</div>
+            <div><b>Hông nám yùu nǎi ?</b> — où sont les toilettes ?</div>
+            <div><b>Mâi pen rai</b> — pas de souci / ça va</div>
+            <div><b>Khǎw thôot</b> — pardon / excusez-moi</div>
+            <div><b>Náam / Bia</b> — eau / bière</div>
+            <div><b>Chon kâew !</b> — santé ! (trinquer)</div>
+            <div><b>nèung, sǎwng, sǎam, sìi, hâa</b> — 1 à 5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== BUDGET ===== -->
+  <section class="section" id="budget">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-head__l">
+          <div class="sec-num">07 — Le nerf de la guerre</div>
+          <h2>Budget</h2>
+          <p>Estimation <b>par personne</b>, profil routard-confort (chambres partagées, street food + quelques bons restos, les activités du plan). Hors gros shopping et grosses soirées. Un ordre de grandeur, pas un devis.</p>
+        </div>
+      </div>
+      <div class="budget reveal">
+        <table>
+          <thead><tr><td>Poste</td><td>Estimation / pers</td></tr></thead>
+          <tbody>
+            <tr><td>Logement (20 nuits, partagé)</td><td>200–320 €</td></tr>
+            <tr><td>Transport interne (vols + ferry + bus)</td><td>120–200 €</td></tr>
+            <tr><td>Activités &amp; excursions</td><td>200–350 €</td></tr>
+            <tr><td>Nourriture &amp; boissons</td><td>300–500 €</td></tr>
+            <tr><td>Transport local (Grab, songthaews, scooter)</td><td>80–150 €</td></tr>
+            <tr><td>Divers (SIM, imprévus, souvenirs)</td><td>100–200 €</td></tr>
+            <tr class="sub"><td>Sous-total sur place</td><td>~1000–1720 €</td></tr>
+            <tr><td>Vols internationaux (déjà payés)</td><td>~1040 €</td></tr>
+            <tr class="total"><td>Total voyage</td><td>~2050–2760 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="budget__note">💡 Les vols internationaux Condor sont déjà payés (~1040 €). Le reste se règle surtout sur place, beaucoup en cash.</p>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">
@@ -548,6 +693,7 @@ const TRANSFERTS = [
 const SPOTS = [
   // Koh Samui
   {n:"Chaweng & Lamai (plages)",z:"Koh Samui",c:"Plage",note:"Chaweng = la grande plage animée (bars, vie nocturne) ; Lamai = un cran plus tranquille, bonne base fitness/Muay Thai.",m:"https://www.google.com/maps/search/?api=1&query=Chaweng+Beach+Koh+Samui",r:""},
+  {n:"Silver Beach (Crystal Bay)",z:"Koh Samui",c:"Plage",note:"Petite crique entre Chaweng et Lamai, eau claire, snorkeling léger possible. Plus calme et jolie.",m:"https://www.google.com/maps/search/?api=1&query=Silver+Beach+Crystal+Bay+Koh+Samui",r:""},
   {n:"Big Buddha (Wat Phra Yai)",z:"Koh Samui",c:"Temple",note:"Bouddha doré de 12 m sur un îlot au nord-est, emblème de l'île. Rapide mais incontournable, à coupler avec Bophut juste à côté.",m:"https://www.google.com/maps/search/?api=1&query=Big+Buddha+Wat+Phra+Yai+Koh+Samui",r:""},
   {n:"Wat Plai Laem",z:"Koh Samui",c:"Temple",note:"Temple coloré avec la déesse Guanyin à 18 bras sur un lac. Juste à côté du Big Buddha. Très photogénique.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Plai+Laem+Koh+Samui",r:""},
   {n:"Hin Ta & Hin Yai",z:"Koh Samui",c:"Viewpoint",note:"Les rochers « grand-père & grand-mère » aux formes suggestives près de Lamai. Stop photo rapide + bord de mer.",m:"https://www.google.com/maps/search/?api=1&query=Hin+Ta+Hin+Yai+Koh+Samui",r:""},
@@ -556,6 +702,7 @@ const SPOTS = [
   {n:"Koh Madsum (île aux cochons)",z:"Koh Samui",c:"Excursion",note:"Plage de sable blanc avec des cochons qui se baladent. Quirky et photogénique, eau turquoise. Entrée ~50 THB. Y aller tôt le matin.",m:"https://www.google.com/maps/search/?api=1&query=Koh+Madsum+Pig+Island+Koh+Samui",r:"https://www.getyourguide.com/koh-samui-l898/"},
   {n:"Koh Tan (Ko Taen)",z:"Koh Samui",c:"Snorkel & plongée",note:"Petite île au sud, snorkel sur récif accessible depuis la plage, peu de monde, resto + kayaks. À combiner avec Koh Madsum en taxi-boat depuis Thong Krut (~50€/4 pers, 4h).",m:"https://www.google.com/maps/search/?api=1&query=Koh+Tan+Koh+Samui&query_place_id=ChIJ9X3NSeKKVDAR87-AZI28Hw4",r:"https://www.getyourguide.com/koh-samui-l898/"},
   {n:"Chaweng Boxing Stadium",z:"Koh Samui",c:"Sortie",note:"Le plus grand stade de Muay Thai du sud : combats en soirée plusieurs fois/semaine. Ambiance garantie.",m:"https://www.google.com/maps/search/?api=1&query=Chaweng+Boxing+Stadium+Koh+Samui",r:""},
+  {n:"Initiation Muay Thai (un cours, pas juste regarder)",z:"Koh Samui",c:"Sortie",note:"Séance découverte dans un camp — Lamai (Samui) regorge de gyms, sinon plein d'options à Chiang Mai. Technique + cardio, accessible débutants, ~300-500 ฿ le cours. Vu votre côté sport, bien plus marquant que d'assister à un combat.",m:"",r:"https://www.getyourguide.com/koh-samui-l898/"},
   // Ang Thong
   {n:"Parc marin de Mu Ko Ang Thong",z:"Ang Thong",c:"Excursion",note:"42 îles calcaires, lagon émeraude (Emerald Lake), kayak, viewpoint panoramique. Journée en bateau depuis Samui. Paysages superbes (peu de snorkeling).",m:"https://www.google.com/maps/search/?api=1&query=Mu+Ko+Ang+Thong+National+Marine+Park",r:"https://www.getyourguide.com/mu-ko-ang-thong-national-park-l89267/"},
   // Khao Sok
@@ -569,6 +716,7 @@ const SPOTS = [
   {n:"Bua Tong (Sticky Waterfalls)",z:"Chiang Mai",c:"Cascade",note:"Cascade de calcaire qu'on escalade pieds nus (la roche n'est pas glissante, c'est l'attraction). Fun et gratuit, ~1h-1h30 de route. Y aller tôt.",m:"https://www.google.com/maps/search/?api=1&query=Bua+Tong+Sticky+Waterfalls&query_place_id=ChIJu1M68-cb2jARc3Tlb3ICDkw",r:""},
   {n:"Marché du week-end (Walking Street)",z:"Chiang Mai",c:"Marché",note:"Sunday Walking Street (Ratchadamnoen) le dimanche, ou Saturday Walking Street (Wualai) le samedi : artisanat, street food, ambiance. Night Bazaar tous les soirs sinon.",m:"https://www.google.com/maps/search/?api=1&query=Sunday+Walking+Street+Tha+Phae+Chiang+Mai",r:""},
   {n:"Nimman (Nimmanhaemin)",z:"Chiang Mai",c:"Bar & resto",note:"Le quartier hipster : cafés de spécialité, restos, bars, boutiques de créateurs, rooftops. Parfait le soir et pour le brunch. One Nimman = jolie place avec stands.",m:"https://www.google.com/maps/search/?api=1&query=Nimmanhaemin+Road+Chiang+Mai",r:""},
+  {n:"Cours de cuisine thaïe",z:"Chiang Mai",c:"Sortie",note:"Demi-journée : visite d'un marché local puis on cuisine 4-5 plats (pad thaï, curry, soupe tom yum). ~1000-1200 ฿, activité de groupe parfaite, et on repart avec les recettes. Chiang Mai est la meilleure ville pour ça.",m:"",r:"https://www.getyourguide.com/chiang-mai-l271/"},
   // Chiang Rai
   {n:"Wat Rong Khun (Temple Blanc)",z:"Chiang Rai",c:"Temple",note:"Temple blanc immaculé incrusté de miroirs, œuvre d'art contemporaine (pont des mains, fresques pop-culture à l'intérieur). 100 THB. Y aller tôt ou vers midi.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Rong+Khun+White+Temple&query_place_id=ChIJD5RZzt-31zARo7esjg3V_Co",r:"https://www.watrongkhun.org/"},
   {n:"Wat Rong Suea Ten (Temple Bleu)",z:"Chiang Rai",c:"Temple",note:"Bleu électrique + dorures, immense Bouddha blanc à l'intérieur, dragons à l'entrée. Onirique. Gratuit. À coupler avec le Temple Blanc et la Maison Noire.",m:"https://www.google.com/maps/search/?api=1&query=Wat+Rong+Suea+Ten+Blue+Temple&query_place_id=ChIJERD0pfEG1zARLAVNEwcKLOc",r:""},
@@ -611,11 +759,14 @@ const BONS_PLANS = [
   {t:"Marché Chang Phuak & la « Cowboy Hat Lady »",c:"Resto/Bar",z:"Chiang Mai",note:"Marché de nuit street food adoré des locaux (porte Nord). La fameuse Cowboy Hat Lady sert un khao kha moo (jarret de porc mijoté sur riz) primé au Michelin Bib Gourmand. Pas cher, excellent.",lien:""},
   {t:"Night Bazaar + Saturday Night Market",c:"Resto/Bar",z:"Chiang Rai",note:"Le marché de nuit de Chiang Rai (tous les soirs, street food + scène musicale) et le Saturday Night Market sur Thanalai Road le samedi. Parfait pour dîner pas cher.",lien:""},
   {t:"Jodd Fairs plutôt que les marchés trop touristiques",c:"Resto/Bar",z:"Bangkok",note:"Marché de nuit branché (Rama IX, près de la MRT) : street food, ambiance jeune, le fameux « leng saap » (travers de porc épicés). Plus local et vivant que certains marchés ultra-touristiques.",lien:""},
+  {t:"Dernier soir = rooftop bar",c:"Resto/Bar",z:"Bangkok",note:"Clôturer le voyage sur un rooftop de Bangkok (côté Sukhumvit ou Silom) : vue sur la skyline au coucher du soleil. Vérifier le dress code (souvent pas de claquettes ni short) et viser l'happy hour pour limiter l'addition.",lien:""},
   {t:"Chinatown (Yaowarat) le soir",c:"Resto/Bar",z:"Bangkok",note:"Yaowarat à la nuit tombée = paradis de la street food (fruits de mer grillés, dim sum, desserts). Y aller le ventre vide, marcher et picorer aux stands les plus bondés (= les meilleurs).",lien:""},
   {t:"Tour du lac AVEC nuit = voir la faune",c:"Astuce locale",z:"Khao Sok",note:"Le day-trip seul rate les animaux. La nuit sur le lac → gibbons, calaos, parfois éléphants au lever et au coucher du jour, quand ils descendent boire. C'est LE moment magique de Khao Sok, ça vaut la nuit en bungalow flottant.",lien:"https://www.getyourguide.com/cheow-lan-lake-l168428/"},
   {t:"« Le Grand Palais est fermé » = arnaque",c:"Arnaque à éviter",z:"Bangkok",note:"Scam classique près du Grand Palais : on t'affirme qu'il est fermé pour t'emmener ailleurs (bijoux, costumes, agences). C'est faux. Acheter les billets au guichet officiel / site officiel uniquement, et tenue couvrante obligatoire.",lien:"https://www.royalgrandpalace.th/en/buy-ticket"},
   {t:"Carte d'arrivée TDAC à remplir en ligne avant",c:"Argent/Timing",z:"Transversal",note:"Le TDAC (Thailand Digital Arrival Card) est obligatoire, à remplir en ligne dans les ~3 jours avant l'arrivée, pour chacun. Gratuit sur le site officiel uniquement (méfiance des sites tiers payants). Garder le QR code.",lien:"https://tdac.immigration.go.th"},
   {t:"7-Eleven = base arrière à tous les coins de rue",c:"Astuce locale",z:"Transversal",note:"Eau fraîche, snacks, recharges téléphone, médocs de base, parfois retraits/paiements de factures. Ouvert tout le temps, clim. Le toast/sandwich réchauffé est un classique du voyageur fauché.",lien:""},
+  {t:"Crème solaire reef-safe obligatoire dans les parcs",c:"Astuce locale",z:"Transversal",note:"Les filtres oxybenzone, octinoxate, 4-MBC et butylparabène sont interdits dans les parcs nationaux (Ang Thong, Khao Sok…), amende jusqu'à 100 000 ฿, contrôles renforcés depuis 2025. Prendre une crème minérale « reef safe » (oxyde de zinc) — dispo chez Boots/Watsons sur place — ou porter un lycra anti-UV.",lien:""},
+  {t:"Garder un jour « libre » par étape",c:"Astuce locale",z:"Transversal",note:"Ne pas tout sur-planifier. Les meilleurs moments (un local qui t'embarque, une plage vide, un marché au hasard) arrivent quand on laisse du mou. Un créneau sans rien de prévu par zone = la marge pour improviser ou se reposer.",lien:""},
   {t:"Faire le plein de cash avant l'île",c:"Argent/Timing",z:"Koh Samui",note:"Tout est importé sur Samui → plus cher que le continent. Retirer du cash à l'aéroport / sur le continent quand c'est possible, et comparer les prix avant de réserver activités sur place.",lien:""},
   {t:"Se loger vers la tour de l'horloge",c:"Logement",z:"Chiang Rai",note:"Ville petite et tranquille : se loger vers la tour de l'horloge / le marché de nuit permet de tout faire à pied le soir.",lien:""},
   {t:"Scooter : permis international + casque obligatoires",c:"Transport malin",z:"Koh Samui",note:"Contrôles de police fréquents sur Samui : sans permis moto international = amende systématique. Casque obligatoire. Vérifier l'assurance, conduite à gauche, routes glissantes sous la pluie. Les accidents de scooter sont la 1re cause de pépin des touristes.",lien:""},
@@ -637,7 +788,7 @@ const BONS_PLANS = [
 const CHECKLISTS = [
   {h:"Avant le départ",items:["Vérifier validité passeport (6 mois après l'entrée)","Souscrire une assurance voyage AVEC clause scooter","Obtenir un permis international (si on compte louer un scooter)","Réserver les vols : Bangkok → Samui (4 août), Surat Thani → Chiang Mai, Chiang Rai → Bangkok","Réserver la 1ère nuit à Koh Samui (4 août, après le vol du soir)","Réserver les logements Chiang Mai & Chiang Rai","Réserver le transfert Koh Samui → Khao Sok (ferry + van, sur 12Go)","Réserver le bungalow flottant sur le lac Cheow Lan (places limitées en août)","Réserver le sanctuaire d'éléphants éthique (Chiang Mai) — à l'avance","Réserver les billets Muay Thai (Rajadamnern)","Remplir le TDAC sur tdac.immigration.go.th (J-3, sans accents, les 3)"]},
   {h:"Argent & admin",items:["Prévenir les banques / Revolut du voyage","Prévoir 2 moyens de paiement (carte + cash de secours)","Commander une eSIM (ou prévoir SIM AIS/True à l'aéroport)","Télécharger Maps hors-ligne + 12Go Asia + Grab","Mettre en favori : QR TDAC, billet retour, 1ère résa hôtel","Remplir le formulaire API Condor (avant chaque vol)"]},
-  {h:"Bagages",items:["Trousse pharma (anti-diarrhée, pansements, paracétamol)","Crème solaire (chère sur place)","Répulsif anti-moustiques (dengue en saison verte)","Adaptateur de prise (souvent ok sans, mais au cas où)","Sac sec / pochette étanche (bateaux, snorkel)","Maillot x2, lunettes de soleil, casquette","Chaussures fermées / baskets (rando jungle Khao Sok, Doi Inthanon, soirées)","Vêtements couvrants pour les temples (épaules/genoux)"]},
+  {h:"Bagages",items:["Trousse pharma (anti-diarrhée, pansements, paracétamol)","Crème solaire (chère sur place)","Crème solaire reef-safe (obligatoire dans les parcs marins type Ang Thong — amende sinon)","Répulsif anti-moustiques (dengue en saison verte)","Adaptateur de prise (souvent ok sans, mais au cas où)","Sac sec / pochette étanche (bateaux, snorkel)","Maillot x2, lunettes de soleil, casquette","Chaussures fermées / baskets (rando jungle Khao Sok, Doi Inthanon, soirées)","Vêtements couvrants pour les temples (épaules/genoux)","Petite laine / coupe-vent (Doi Inthanon en altitude + soirées au Nord)"]},
   {h:"Sur place",items:["Activer l'eSIM / acheter la SIM à l'arrivée","Retirer du cash en grosse coupure (frais ATM ~220 THB)","Casque + prudence à chaque scooter, eau en bouteille","Réserver l'excursion Ang Thong (un jour de beau temps)","Réserver l'excursion petites îles Koh Tan + Koh Madsum (taxi-boat Thong Krut)","Réserver le tour du lac Cheow Lan + safari à Khao Sok"]}
 ];
 
@@ -652,6 +803,19 @@ const $ = s => document.querySelector(s);
     if(idx<ROUTE.length-1) h += `<span class="route__seg"></span>`;
   });
   r.innerHTML = h;
+})();
+
+// countdown to departure
+(()=>{
+  const el=$("#cd"); if(!el) return;
+  const dep=new Date(2026,7,3); // 3 août 2026 (départ Paris)
+  const today=new Date(); today.setHours(0,0,0,0);
+  const days=Math.round((dep-today)/86400000);
+  if(days>1) el.textContent=`✈️ J-${days} avant le départ`;
+  else if(days===1) el.textContent="✈️ Départ demain !";
+  else if(days===0) el.textContent="🛫 C'est le grand jour !";
+  else if(days>=-21) el.textContent="🌴 En voyage…";
+  else { el.textContent="🏝️ De retour — quel voyage !"; }
 })();
 
 // nav toggle (mobile menu)
@@ -735,6 +899,7 @@ const $ = s => document.querySelector(s);
 
   const grid = $("#spotGrid");
   function card(s){
+    const maps = s.m ? `<a class="spot__map" href="${s.m}" target="_blank" rel="noopener">Voir sur Maps ↗</a>` : "";
     const resa = s.r ? `<a class="spot__map book" href="${s.r}" target="_blank" rel="noopener">Réserver ↗</a>` : "";
     return `<div class="spot reveal in" data-z="${s.z}">
       <div class="spot__top">
@@ -745,7 +910,7 @@ const $ = s => document.querySelector(s);
       <div class="spot__name">${s.n}</div>
       <div class="spot__note">${s.note}</div>
       <div class="spot__links">
-        <a class="spot__map" href="${s.m}" target="_blank" rel="noopener">Voir sur Maps ↗</a>
+        ${maps}
         ${resa}
       </div>
     </div>`;
